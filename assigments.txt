@@ -3,3 +3,10 @@
 2. create instance variable of _currentIndex
 3. onTap setState of _currentIndex to index you are getting from onTap
 4. Provide _currentIndex to currentIndex of BottomNavigationBar
+
+
+1. Create new screen "MeetupDetailScreen" as stateless widget
+   in screens/meetup_detail_screen.dart
+2. in build return Scaffold:
+   - in body display text of: "I am Meetup Detail Screen"
+   - appBar with title "Meetup Detail"

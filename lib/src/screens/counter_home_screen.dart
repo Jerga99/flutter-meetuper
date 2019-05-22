@@ -34,6 +34,10 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
               textDirection: TextDirection.ltr,
               style: TextStyle(fontSize: 30.0)
             ),
+            RaisedButton(
+              child: Text('Go To Detail'),
+              onPressed: () => Navigator.pushNamed(context, '/meetupDetail'),
+            )
           ],
         )
       ),
