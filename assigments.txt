@@ -10,3 +10,11 @@
 2. in build return Scaffold:
    - in body display text of: "I am Meetup Detail Screen"
    - appBar with title "Meetup Detail"
+
+
+
+1. Create new stateless widget called "_PostList" in post_screen.dart
+2. Move ListView from PostScreen to _PostList
+3. Provide _PostList to "body" of Scaffold in PostScreen
+4. Pass _posts to _PostList via Constructor -> when you instanciating
+   e.g - _PostList(posts: _posts)

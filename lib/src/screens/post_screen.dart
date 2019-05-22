@@ -26,14 +26,7 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: _posts.map((post) =>
-          ListTile(
-            title: Text(post['title']),
-            subtitle: Text(post['body'])
-          )
-        ).toList(),
-      ),
+      body: _PostList(posts: _posts),
       bottomNavigationBar: BottomNavigation(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {},
@@ -45,3 +38,20 @@ class _PostScreenState extends State<PostScreen> {
   }
 }
 
+
+class _PostList extends StatelessWidget {
+  final List<dynamic> _posts;
+
+  _PostList({@required List<dynamic> posts}): _posts = posts;
+
+  Widget build(BuildContext context) {
+    return ListView(
+      children: _posts.map((post) =>
+        ListTile(
+          title: Text(post['title']),
+          subtitle: Text(post['body'])
+        )
+      ).toList(),
+    );
+  }
+}
