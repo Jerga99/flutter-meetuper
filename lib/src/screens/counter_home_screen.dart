@@ -4,9 +4,8 @@ class CounterHomeScreen extends StatefulWidget {
   final String _title;
   CounterHomeScreen({String title}): _title = title;
 
-  CounterHomeScreenState createState() {
-    return CounterHomeScreenState();
-  }
+  @override
+  CounterHomeScreenState createState() => CounterHomeScreenState();
 }
 
 class CounterHomeScreenState extends State<CounterHomeScreen> {
