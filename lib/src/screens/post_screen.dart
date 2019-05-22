@@ -13,30 +13,26 @@ class _PostScreenState extends State<PostScreen> {
 
   void initState() {
     super.initState();
+    _fetchPosts();
+  }
 
+  void _fetchPosts() {
     http.get('https://jsonplaceholder.typicode.com/posts')
       .then((res) {
-        print(res.body);
         final posts = json.decode(res.body);
-        print(posts);
         setState(() => _posts = posts);
       });
   }
 
   Widget build(BuildContext context) {
-    print('I am calling Build!');
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Welcome In Posts Screen',
-              textDirection: TextDirection.ltr,
-              style: TextStyle(fontSize: 15.0)
-            ),
-          ],
-        )
+      body: ListView(
+        children: _posts.map((post) =>
+          ListTile(
+            title: Text(post['title']),
+            subtitle: Text(post['body'])
+          )
+        ).toList(),
       ),
       bottomNavigationBar: BottomNavigation(),
       floatingActionButton: FloatingActionButton(
