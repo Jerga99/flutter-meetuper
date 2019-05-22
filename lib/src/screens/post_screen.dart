@@ -46,11 +46,17 @@ class _PostList extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: _posts.length,
+      itemCount: _posts.length * 2,
       itemBuilder: (BuildContext context, int i) {
+        if (i.isOdd) {
+          return Divider();
+        }
+
+        final index = i ~/ 2;
+
         return ListTile(
-          title: Text(_posts[i]['title']),
-          subtitle: Text(_posts[i]['body'])
+          title: Text(_posts[index]['title']),
+          subtitle: Text(_posts[index]['body'])
         );
       },
     );
