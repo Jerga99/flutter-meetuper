@@ -1,0 +1,5 @@
+
+1. Change _BottomNavigation to stateful widget
+2. create instance variable of _currentIndex
+3. onTap setState of _currentIndex to index you are getting from onTap
+4. Provide _currentIndex to currentIndex of BottomNavigationBar

@@ -47,12 +47,20 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
     );
   }
 }
+class _BottomNavigation extends StatefulWidget {
 
-class _BottomNavigation extends StatelessWidget {
+  @override
+  _BottomNavigationState createState() => _BottomNavigationState();
+}
+
+
+class _BottomNavigationState extends State<_BottomNavigation> {
+  int _currentIndex = 0;
 
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: 0,
+      currentIndex: _currentIndex,
+      onTap: (int index) => setState(() => _currentIndex = index),
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
