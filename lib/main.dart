@@ -13,7 +13,7 @@ class MeetuperApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       home: CounterHomeScreen(title: appTitle),
       routes: {
-        '/meetupDetail': (context) => MeetupDetailScreen()
+        MeetupDetailScreen.route: (context) => MeetupDetailScreen()
       },
     );
   }

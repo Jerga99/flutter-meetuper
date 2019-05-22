@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetuper/src/widgets/bottom_navigation.dart';
 
 class CounterHomeScreen extends StatefulWidget {
   final String _title;
@@ -41,7 +42,7 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
           ],
         )
       ),
-      bottomNavigationBar: _BottomNavigation(),
+      bottomNavigationBar: BottomNavigation(),
       floatingActionButton: FloatingActionButton(
         onPressed: _increment,
         tooltip: 'Increment',
@@ -51,34 +52,4 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
     );
   }
 }
-class _BottomNavigation extends StatefulWidget {
 
-  @override
-  _BottomNavigationState createState() => _BottomNavigationState();
-}
-
-
-class _BottomNavigationState extends State<_BottomNavigation> {
-  int _currentIndex = 0;
-
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      onTap: (int index) => setState(() => _currentIndex = index),
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          title: Text('Home')
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          title: Text('Profile')
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          title: Text('Settings')
-        )
-      ]
-    );
-  }
-}
