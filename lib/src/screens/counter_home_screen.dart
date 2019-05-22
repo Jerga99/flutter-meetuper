@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
 
-class CounterHomeScreen extends StatelessWidget {
+class CounterHomeScreen extends StatefulWidget {
   final String _title;
-  final int _counter = 0;
-
   CounterHomeScreen({String title}): _title = title;
 
+  CounterHomeScreenState createState() {
+    return CounterHomeScreenState();
+  }
+}
+
+class CounterHomeScreenState extends State<CounterHomeScreen> {
+  int _counter = 0;
+
   _increment() {
-    print('I am clicking floating button!');
+    setState(() {
+      _counter++;
+    });
   }
 
   Widget build(BuildContext context) {
+    print('Calling build!');
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Welcome in $_title, lets increment numbers!',
+              'Welcome in ${widget._title}, lets increment numbers!',
               textDirection: TextDirection.ltr,
               style: TextStyle(fontSize: 15.0)
             ),
@@ -34,7 +43,7 @@ class CounterHomeScreen extends StatelessWidget {
         tooltip: 'Increment',
         child: Icon(Icons.add)
       ),
-      appBar: AppBar(title: Text(_title)),
+      appBar: AppBar(title: Text(widget._title)),
     );
   }
 }
