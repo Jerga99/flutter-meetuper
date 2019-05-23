@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/models/post.dart';
 import 'package:flutter_meetuper/src/services/post_api_provider.dart';
+import 'package:flutter_meetuper/src/state/app_state.dart';
 import 'package:flutter_meetuper/src/widgets/bottom_navigation.dart';
 import 'package:faker/faker.dart';
 
@@ -64,6 +65,7 @@ class _PostList extends StatelessWidget {
 
   Widget build(BuildContext context) {
     final posts = _InheritedPost.of(context).posts;
+    final testingData = AppStore.of(context).testingData;
 
     return Scaffold(
       body: ListView.builder(
@@ -83,7 +85,7 @@ class _PostList extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigation(),
       floatingActionButton: _PostButton(),
-      appBar: AppBar(title: Text('Posts')),
+      appBar: AppBar(title: Text(testingData)),
     );
   }
 }
