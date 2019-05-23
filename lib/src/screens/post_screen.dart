@@ -34,15 +34,17 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget build(BuildContext context) {
-    return _PostList(posts: _posts);
+    return _PostList(posts: _posts, createPost: _addPost);
   }
 }
 
 
 class _PostList extends StatelessWidget {
   final List<Post> _posts;
+  final Function createPost;
 
-  _PostList({@required List<Post> posts}): _posts = posts;
+  _PostList({@required List<Post> posts,
+             @required this.createPost}): _posts = posts;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +65,7 @@ class _PostList extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigation(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: createPost,
         tooltip: 'Add Post',
         child: Icon(Icons.add)
       ),
