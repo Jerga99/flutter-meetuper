@@ -18,3 +18,11 @@
 3. Provide _PostList to "body" of Scaffold in PostScreen
 4. Pass _posts to _PostList via Constructor -> when you instanciating
    e.g - _PostList(posts: _posts)
+
+
+1. Create new screen "MeetupHomeScreen" as stateful widget
+   in screens/meetup_home_screen.dart
+2. in build of state return Scaffold:
+   - in body display text in center with text: "I am Meetup Home Screen"
+   - appBar with title "Home"
+3. Provide "MeetupHomeScreen" as home screen to "MaterialApp"
