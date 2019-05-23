@@ -34,7 +34,19 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget build(BuildContext context) {
-    return _PostList(posts: _posts, createPost: _addPost);
+    return _InheritedPost(
+      child: _PostList(posts: _posts, createPost: _addPost)
+    );
+  }
+}
+
+class _InheritedPost extends StatelessWidget {
+  final Widget child;
+
+  _InheritedPost({@required this.child});
+
+  Widget build(BuildContext context) {
+    return child;
   }
 }
 
@@ -64,12 +76,18 @@ class _PostList extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BottomNavigation(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: createPost,
-        tooltip: 'Add Post',
-        child: Icon(Icons.add)
-      ),
+      floatingActionButton: _PostButton(),
       appBar: AppBar(title: Text('Posts')),
+    );
+  }
+}
+
+class _PostButton extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => {},
+      tooltip: 'Add Post',
+      child: Icon(Icons.add)
     );
   }
 }
