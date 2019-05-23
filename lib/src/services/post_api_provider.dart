@@ -4,6 +4,10 @@ import 'package:flutter_meetuper/src/models/post.dart';
 
 class PostApiProvider {
 
+  static final PostApiProvider _singleton = PostApiProvider._internal();
+  factory PostApiProvider() => _singleton;
+  PostApiProvider._internal();
+
 
   Future<List<Post>> fetchPosts() async {
     final res = await http.get('https://jsonplaceholder.typicode.com/posts');
