@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/models/post.dart';
+import 'package:flutter_meetuper/src/services/post_api_provider.dart';
 import 'package:flutter_meetuper/src/widgets/bottom_navigation.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class PostScreen extends StatefulWidget {
+  final PostApiProvider _api = PostApiProvider();
+
   @override
   _PostScreenState createState() => _PostScreenState();
 }
@@ -17,16 +18,11 @@ class _PostScreenState extends State<PostScreen> {
     _fetchPosts();
   }
 
-  void _fetchPosts() {
-    http.get('https://jsonplaceholder.typicode.com/posts')
-      .then((res) {
-        final List<dynamic> parsedPosts = json.decode(res.body);
-        final posts = parsedPosts.map((parsedPost) {
-          return Post.fromJSON(parsedPost);
-        }).toList();
-        setState(() => _posts = posts);
-      });
+  _fetchPosts() async {
+    List<Post> posts = await widget._api.fetchPosts();
+    setState(() => _posts = posts);
   }
+
 
   Widget build(BuildContext context) {
     return Scaffold(
