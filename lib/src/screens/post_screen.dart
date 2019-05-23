@@ -33,18 +33,8 @@ class _PostScreenState extends State<PostScreen> {
     setState(() => _posts.add(newPost));
   }
 
-
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _PostList(posts: _posts),
-      bottomNavigationBar: BottomNavigation(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addPost,
-        tooltip: 'Add Post',
-        child: Icon(Icons.add)
-      ),
-      appBar: AppBar(title: Text('Posts')),
-    );
+    return _PostList(posts: _posts);
   }
 }
 
@@ -55,20 +45,29 @@ class _PostList extends StatelessWidget {
   _PostList({@required List<Post> posts}): _posts = posts;
 
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return Scaffold(
+      body: ListView.builder(
       itemCount: _posts.length * 2,
       itemBuilder: (BuildContext context, int i) {
-        if (i.isOdd) {
-          return Divider();
-        }
+          if (i.isOdd) {
+            return Divider();
+          }
 
-        final index = i ~/ 2;
+          final index = i ~/ 2;
 
-        return ListTile(
-          title: Text(_posts[index].title),
-          subtitle: Text(_posts[index].body)
-        );
-      },
+          return ListTile(
+            title: Text(_posts[index].title),
+            subtitle: Text(_posts[index].body)
+          );
+        },
+      ),
+      bottomNavigationBar: BottomNavigation(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {},
+        tooltip: 'Add Post',
+        child: Icon(Icons.add)
+      ),
+      appBar: AppBar(title: Text('Posts')),
     );
   }
 }
