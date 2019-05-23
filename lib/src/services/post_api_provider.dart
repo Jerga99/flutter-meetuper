@@ -13,8 +13,6 @@ class PostApiProvider {
     final res = await http.get('https://jsonplaceholder.typicode.com/posts');
     final List<dynamic> parsedPosts = json.decode(res.body);
 
-    return parsedPosts.map((parsedPost) {
-      return Post.fromJSON(parsedPost);
-    }).toList();
+    return parsedPosts.map((parsedPost) => Post.fromJSON(parsedPost)).take(2).toList();
   }
 }
