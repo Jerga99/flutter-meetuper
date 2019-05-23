@@ -1,12 +1,23 @@
 import 'package:faker/faker.dart';
 import 'package:flutter_meetuper/src/models/post.dart';
+import 'package:flutter_meetuper/src/services/post_api_provider.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class PostModel extends Model {
-  final List<Post> posts;
+  List<Post> posts;
   final testingState = 'Testing State';
 
-  PostModel({this.posts});
+  final PostApiProvider _api = PostApiProvider();
+
+  PostModel() {
+    _fetchPosts();
+  }
+
+  void _fetchPosts() async {
+    List<Post> posts = await _api.fetchPosts();
+    this.posts = posts;
+    notifyListeners();
+  }
 
   addPost() {
     final id = faker.randomGenerator.integer(9999);
