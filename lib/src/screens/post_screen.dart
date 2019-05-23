@@ -35,33 +35,35 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget build(BuildContext context) {
     return _InheritedPost(
-      child: _PostList(posts: _posts, createPost: _addPost)
+      posts: _posts,
+      createPost: _addPost,
+      child: _PostList()
     );
   }
 }
 
-class _InheritedPost extends StatelessWidget {
+class _InheritedPost extends InheritedWidget {
   final Widget child;
+  final List<Post> posts;
+  final Function createPost;
 
-  _InheritedPost({@required this.child});
+  _InheritedPost({@required this.child,
+                  @required this.posts,
+                  @required this.createPost}) : super(child: child);
 
-  Widget build(BuildContext context) {
-    return child;
-  }
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) => true;
 }
 
 
 class _PostList extends StatelessWidget {
-  final List<Post> _posts;
-  final Function createPost;
-
-  _PostList({@required List<Post> posts,
-             @required this.createPost}): _posts = posts;
 
   Widget build(BuildContext context) {
+    final posts = (context.inheritFromWidgetOfExactType(_InheritedPost) as _InheritedPost).posts;
+
     return Scaffold(
       body: ListView.builder(
-      itemCount: _posts.length * 2,
+      itemCount: posts.length * 2,
       itemBuilder: (BuildContext context, int i) {
           if (i.isOdd) {
             return Divider();
@@ -70,8 +72,8 @@ class _PostList extends StatelessWidget {
           final index = i ~/ 2;
 
           return ListTile(
-            title: Text(_posts[index].title),
-            subtitle: Text(_posts[index].body)
+            title: Text(posts[index].title),
+            subtitle: Text(posts[index].body)
           );
         },
       ),
