@@ -3,69 +3,67 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+
 class MeetupHomeScreen extends StatefulWidget {
   MeetupHomeScreenState createState() => MeetupHomeScreenState();
 }
 
 class MeetupHomeScreenState extends State<MeetupHomeScreen> {
-  List<CustomText> customTextList =
-  [CustomText(key: ValueKey('1'), name: '1'), CustomText(key: ValueKey('2'), name: '2'), CustomText(key: ValueKey('3'), name: '3')];
-
-  _shuffleList() {
-    setState(() {
-      customTextList.shuffle();
-      customTextList.forEach((e) => print(e.name));
-    });
-  }
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: customTextList,
+        children: [
+          MeetupCard(),
+          MeetupCard(),
+          MeetupCard()
+        ],
       ),
       appBar: AppBar(
         title: Text('Home')
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: _shuffleList,
+        onPressed: (){},
       ),
     );
   }
 }
 
-
-class CustomText extends StatefulWidget {
-  final String name;
-
-  CustomText({Key key, this.name}): super(key: key);
-
-  @override
-  CustomTextState createState() => CustomTextState();
-}
-
-class CustomTextState extends State<CustomText> {
-  List colors = [Colors.red, Colors.blue, Colors.brown, Colors.orange, Colors.grey, Colors.deepPurple];
-  Random random = Random();
-  Color color;
-
-  initState() {
-    super.initState();
-    color = colors[random.nextInt(colors.length)];
-  }
+class MeetupCard extends StatelessWidget {
 
 
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Custom Text of $color'),
-      color: color,
-      height: 150.0
+    return Card(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage('https://images.unsplash.com/photo-1512136146408-dab5f2ba8ebb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1567&q=80'),
+            ),
+            title: Text('Meetup in New York'),
+            subtitle: Text('Just some meetup description')
+          ),
+          ButtonTheme.bar(
+            child: ButtonBar(
+              children: <Widget>[
+                FlatButton(
+                  child: Text('Visit Meetup'),
+                  onPressed: () {}
+                ),
+                FlatButton(
+                  child: Text('Favorite'),
+                  onPressed: () {}
+                )
+              ],
+            )
+          )
+        ],
+      )
     );
   }
 }
-
-
-
 
 
 
