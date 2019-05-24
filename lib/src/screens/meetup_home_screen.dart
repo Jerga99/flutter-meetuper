@@ -3,15 +3,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-
-
 class MeetupHomeScreen extends StatefulWidget {
   MeetupHomeScreenState createState() => MeetupHomeScreenState();
 }
 
 class MeetupHomeScreenState extends State<MeetupHomeScreen> {
   List<CustomText> customTextList =
-  [CustomText(key: UniqueKey(), name: '1'), CustomText(key: UniqueKey(), name: '2'), CustomText(key: UniqueKey(), name: '3')];
+  [CustomText(key: ValueKey('1'), name: '1'), CustomText(key: ValueKey('2'), name: '2'), CustomText(key: ValueKey('3'), name: '3')];
 
   _shuffleList() {
     setState(() {
