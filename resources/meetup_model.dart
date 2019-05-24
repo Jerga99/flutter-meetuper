@@ -1,3 +1,5 @@
+import 'category_model.dart';
+
 class Meetup {
   final String id;
   final String processedLocation;

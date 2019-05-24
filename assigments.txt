@@ -26,3 +26,13 @@
    - in body display text in center with text: "I am Meetup Home Screen"
    - appBar with title "Home"
 3. Provide "MeetupHomeScreen" as home screen to "MaterialApp"
+
+
+1. In "MeetupHomeScreenState" fetch "meetups" and assign these "meetups"
+   to the state
+2. pass "meetups" to _MeetupList and in list builder
+   return _MeetupCard with "meetup" from "meetups"
+3. In _MeetupCard replace
+   - avatar url with "meetup.image"
+   - title with "meetup.title"
+   - subtitle with "meetup.description"
