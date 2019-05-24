@@ -97,4 +97,3 @@ class _MeetupList extends StatelessWidget {
 
 
 
-
