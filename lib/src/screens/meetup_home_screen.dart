@@ -10,7 +10,8 @@ class MeetupHomeScreen extends StatefulWidget {
 }
 
 class MeetupHomeScreenState extends State<MeetupHomeScreen> {
-  List<CustomText> customTextList = [CustomText(name: '1'), CustomText(name: '2'), CustomText(name: '3')];
+  List<CustomText> customTextList =
+  [CustomText(key: UniqueKey(), name: '1'), CustomText(key: UniqueKey(), name: '2'), CustomText(key: UniqueKey(), name: '3')];
 
   _shuffleList() {
     setState(() {
@@ -39,7 +40,7 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
 class CustomText extends StatefulWidget {
   final String name;
 
-  CustomText({this.name});
+  CustomText({Key key, this.name}): super(key: key);
 
   @override
   CustomTextState createState() => CustomTextState();
