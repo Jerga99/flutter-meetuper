@@ -14,9 +14,8 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
     return Scaffold(
       body: Column(
         children: [
-          MeetupCard(),
-          MeetupCard(),
-          MeetupCard()
+          _MeetupTitle(),
+          _MeetupList()
         ],
       ),
       appBar: AppBar(
@@ -30,9 +29,18 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
   }
 }
 
-class MeetupCard extends StatelessWidget {
+class _MeetupTitle extends StatelessWidget {
 
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.all(20.0),
+      child: Text('Featured Meetup', style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
+    );
+  }
+}
 
+class _MeetupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
@@ -60,6 +68,25 @@ class MeetupCard extends StatelessWidget {
             )
           )
         ],
+      )
+    );
+  }
+}
+
+class _MeetupList extends StatelessWidget {
+  final List<_MeetupCard> meetupCardList
+    = [_MeetupCard(),_MeetupCard(),_MeetupCard(),_MeetupCard(),_MeetupCard(),_MeetupCard()];
+
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: meetupCardList.length * 2,
+        itemBuilder: (BuildContext context, int i) {
+          if (i.isOdd) return Divider();
+          final index = i ~/ 2;
+
+          return meetupCardList[index];
+        },
       )
     );
   }
