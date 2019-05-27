@@ -4,6 +4,12 @@ import 'package:flutter_meetuper/src/models/meetup.dart';
 import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 
+class MeetupDetailArguments {
+  final String id;
+
+  MeetupDetailArguments({this.id});
+}
+
 
 class MeetupHomeScreen extends StatefulWidget {
   final MeetupApiService _api = MeetupApiService();
@@ -78,7 +84,7 @@ class _MeetupCard extends StatelessWidget {
                 FlatButton(
                   child: Text('Visit Meetup'),
                   onPressed: () {
-                    Navigator.pushNamed(context, MeetupDetailScreen.route);
+                    Navigator.pushNamed(context, MeetupDetailScreen.route, arguments: MeetupDetailArguments(id: meetup.id));
                   }
                 ),
                 FlatButton(

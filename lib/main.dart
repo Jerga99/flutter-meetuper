@@ -18,8 +18,10 @@ class MeetuperApp extends StatelessWidget {
       // },
       onGenerateRoute: (RouteSettings settings) {
         if (settings.name == MeetupDetailScreen.route) {
+          final MeetupDetailArguments arguments = settings.arguments;
+
           return MaterialPageRoute(
-            builder: (context) => MeetupDetailScreen()
+            builder: (context) => MeetupDetailScreen(meetupId: arguments.id)
           );
         }
       }
