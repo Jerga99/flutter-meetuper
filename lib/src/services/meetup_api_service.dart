@@ -20,4 +20,10 @@ class MeetupApiService {
     final List parsedMeetups = json.decode(res.body);
     return parsedMeetups.map((val) => Meetup.fromJSON(val)).toList();
   }
+
+  Future<Meetup> fetchMeetupById(String id) async {
+    final res = await http.get('$url/meetups/$id');
+    final parsedMeetup = json.decode(res.body);
+    return Meetup.fromJSON(parsedMeetup);
+  }
 }
