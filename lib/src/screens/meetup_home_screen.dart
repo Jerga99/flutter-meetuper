@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
+import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 
 
@@ -76,7 +77,9 @@ class _MeetupCard extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   child: Text('Visit Meetup'),
-                  onPressed: () {}
+                  onPressed: () {
+                    Navigator.pushNamed(context, MeetupDetailScreen.route);
+                  }
                 ),
                 FlatButton(
                   child: Text('Favorite'),
