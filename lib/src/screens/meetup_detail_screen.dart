@@ -31,11 +31,25 @@ class MeetupDetailScreenState extends State<MeetupDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: meetup != null
-        ? Column(
+        ? ListView(
           children: <Widget>[
-            HeaderSection(meetup: meetup),
-            TitleSection(meetup: meetup),
-            AdditionalInfoSection(meetup: meetup)
+            HeaderSection(meetup),
+            TitleSection(meetup),
+            AdditionalInfoSection(meetup),
+            Padding(
+              padding: EdgeInsets.all(32.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
+                  'Alps. Situated 1,578 meters above sea level, it is one of the '
+                  'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
+                  'half-hour walk through pastures and pine forest, leads you to the '
+                  'lake, which warms to 20 degrees Celsius in the summer. Activities '
+                  'enjoyed here include rowing, and riding the summer toboggan run.'
+                )
+              )
+            )
           ],
         )
         : Container(width: 0, height: 0),
@@ -48,7 +62,7 @@ class MeetupDetailScreenState extends State<MeetupDetailScreen> {
 class AdditionalInfoSection extends StatelessWidget {
   final Meetup meetup;
 
-  AdditionalInfoSection({this.meetup});
+  AdditionalInfoSection(this.meetup);
 
   String _capitilize(String word) {
     return (word != null && word.isNotEmpty)
@@ -95,7 +109,7 @@ class AdditionalInfoSection extends StatelessWidget {
 class TitleSection extends StatelessWidget {
   final Meetup meetup;
 
-  TitleSection({this.meetup});
+  TitleSection(this.meetup);
 
   Widget build(BuildContext context) {
     Color color = Theme.of(context).primaryColor;
@@ -133,7 +147,7 @@ class TitleSection extends StatelessWidget {
 class HeaderSection extends StatelessWidget {
   final Meetup meetup;
 
-  HeaderSection({this.meetup});
+  HeaderSection(this.meetup);
 
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;

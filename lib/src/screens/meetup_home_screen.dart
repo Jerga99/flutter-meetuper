@@ -73,6 +73,7 @@ class _MeetupCard extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: CircleAvatar(
+              radius: 25.0,
               backgroundImage: NetworkImage(meetup.image),
             ),
             title: Text(meetup.title),
