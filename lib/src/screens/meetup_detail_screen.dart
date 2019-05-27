@@ -34,12 +34,54 @@ class MeetupDetailScreenState extends State<MeetupDetailScreen> {
         ? Column(
           children: <Widget>[
             HeaderSection(meetup: meetup),
-            TitleSection(meetup: meetup)
+            TitleSection(meetup: meetup),
+            AdditionalInfoSection(meetup: meetup)
           ],
         )
         : Container(width: 0, height: 0),
       appBar: AppBar(title: Text('Meetup Detail')),
       bottomNavigationBar: BottomNavigation(),
+    );
+  }
+}
+
+class AdditionalInfoSection extends StatelessWidget {
+  final Meetup meetup;
+
+  AdditionalInfoSection({this.meetup});
+
+  _buildColumn(String label, String text, Color color) {
+    return Column(
+      children: <Widget>[
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 13.0,
+            fontWeight: FontWeight.w400,
+            color: color
+          )
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 25.0,
+            fontWeight: FontWeight.w500,
+            color: color
+          )
+        )
+      ],
+    );
+  }
+
+  Widget build(BuildContext context) {
+    Color color = Theme.of(context).primaryColor;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        _buildColumn('CATEGORY', meetup.category.name, color),
+        _buildColumn('FROM', meetup.timeFrom, color),
+        _buildColumn('TO', meetup.timeTo, color)
+      ],
     );
   }
 }
