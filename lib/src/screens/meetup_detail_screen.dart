@@ -34,11 +34,48 @@ class MeetupDetailScreenState extends State<MeetupDetailScreen> {
         ? Column(
           children: <Widget>[
             HeaderSection(meetup: meetup),
+            TitleSection(meetup: meetup)
           ],
         )
         : Container(width: 0, height: 0),
       appBar: AppBar(title: Text('Meetup Detail')),
       bottomNavigationBar: BottomNavigation(),
+    );
+  }
+}
+
+class TitleSection extends StatelessWidget {
+  final Meetup meetup;
+
+  TitleSection({this.meetup});
+
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(30.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  meetup.title,
+                  style: TextStyle(fontWeight: FontWeight.bold)
+                ),
+                Text(
+                  meetup.shortInfo,
+                  style: TextStyle(color: Colors.grey[500])
+                )
+              ],
+            ),
+          ),
+          Icon(
+            Icons.people,
+            color: Colors.blue[500]
+          ),
+          Text('${meetup.joinedPeopleCount} People')
+        ],
+      )
     );
   }
 }
