@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetuper/src/models/meetup.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 import 'package:flutter_meetuper/src/widgets/bottom_navigation.dart';
 
@@ -14,6 +15,7 @@ class MeetupDetailScreen extends StatefulWidget {
 }
 
 class MeetupDetailScreenState extends State<MeetupDetailScreen> {
+  Meetup meetup;
 
   initState() {
     super.initState();
@@ -22,16 +24,33 @@ class MeetupDetailScreenState extends State<MeetupDetailScreen> {
 
   _fetchMeetup() async {
     final meetup = await widget.api.fetchMeetupById(widget.meetupId);
-    print(meetup.title);
-    print(meetup.description);
+    setState(() => this.meetup = meetup);
   }
 
   Widget build(BuildContext context) {
-    print(widget.meetupId);
     return Scaffold(
-      body: Text(widget.meetupId),
+      body: Column(
+        children: <Widget>[
+          HeaderSection(meetup: meetup),
+        ],
+      ),
       appBar: AppBar(title: Text('Meetup Detail')),
       bottomNavigationBar: BottomNavigation(),
+    );
+  }
+}
+
+
+class HeaderSection extends StatelessWidget {
+  final Meetup meetup;
+
+  HeaderSection({this.meetup});
+
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Image.network(meetup.image, width: 640.0, height: 240.0, fit: BoxFit.cover)
+      ],
     );
   }
 }
