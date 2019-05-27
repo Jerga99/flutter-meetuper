@@ -50,7 +50,13 @@ class AdditionalInfoSection extends StatelessWidget {
 
   AdditionalInfoSection({this.meetup});
 
-  _buildColumn(String label, String text, Color color) {
+  String _capitilize(String word) {
+    return (word != null && word.isNotEmpty)
+     ? word[0].toUpperCase() + word.substring(1)
+     : '';
+  }
+
+  Widget _buildColumn(String label, String text, Color color) {
     return Column(
       children: <Widget>[
         Text(
@@ -62,7 +68,7 @@ class AdditionalInfoSection extends StatelessWidget {
           )
         ),
         Text(
-          text,
+          _capitilize(text),
           style: TextStyle(
             fontSize: 25.0,
             fontWeight: FontWeight.w500,
@@ -92,6 +98,7 @@ class TitleSection extends StatelessWidget {
   TitleSection({this.meetup});
 
   Widget build(BuildContext context) {
+    Color color = Theme.of(context).primaryColor;
     return Padding(
       padding: EdgeInsets.all(30.0),
       child: Row(
@@ -113,7 +120,7 @@ class TitleSection extends StatelessWidget {
           ),
           Icon(
             Icons.people,
-            color: Colors.blue[500]
+            color: color
           ),
           Text('${meetup.joinedPeopleCount} People')
         ],
