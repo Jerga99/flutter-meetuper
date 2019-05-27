@@ -27,13 +27,16 @@ class MeetupDetailScreenState extends State<MeetupDetailScreen> {
     setState(() => this.meetup = meetup);
   }
 
+
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          HeaderSection(meetup: meetup),
-        ],
-      ),
+      body: meetup != null
+        ? Column(
+          children: <Widget>[
+            HeaderSection(meetup: meetup),
+          ],
+        )
+        : Container(width: 0, height: 0),
       appBar: AppBar(title: Text('Meetup Detail')),
       bottomNavigationBar: BottomNavigation(),
     );
@@ -47,9 +50,42 @@ class HeaderSection extends StatelessWidget {
   HeaderSection({this.meetup});
 
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Stack(
+      alignment: AlignmentDirectional.bottomStart,
       children: <Widget>[
-        Image.network(meetup.image, width: 640.0, height: 240.0, fit: BoxFit.cover)
+        Image.network(meetup.image, width: width, height: 240.0, fit: BoxFit.cover),
+        Container(
+          width: width,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.3)
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+            child: ListTile(
+              leading: CircleAvatar(
+                radius: 30.0,
+                backgroundImage: NetworkImage('https://cdn1.vectorstock.com/i/thumb-large/82/55/anonymous-user-circle-icon-vector-18958255.jpg'),
+              ),
+              title: Text(
+                meetup.title,
+                style: TextStyle(
+                  fontSize:  20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+                )
+              ),
+              subtitle: Text(
+                meetup.shortInfo,
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+                )
+              ),
+            ),
+          )
+        )
       ],
     );
   }
