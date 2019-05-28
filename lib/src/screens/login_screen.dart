@@ -44,6 +44,9 @@ class _LoginScreenState extends State<LoginScreen> {
         .login(_loginData)
         .then((data) {
           print(data);
+        })
+        .catchError((error) {
+          print(error);
         });
 
     } else {
