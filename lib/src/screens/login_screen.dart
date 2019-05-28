@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/models/forms.dart';
 import 'package:flutter_meetuper/src/screens/meetup_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/register_screen.dart';
+import 'package:flutter_meetuper/src/utils/validators.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -54,8 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Form(
           key: _formKey,
           autovalidate: _autovalidate,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               Container(
                 margin: EdgeInsets.only(bottom: 15.0),
@@ -78,6 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (value.length < 8) {
                     return 'Minimum length of email is 8 characters!';
                   }
+
+                  return emailValidator(value);
                 },
                 onSaved: (value) => _loginData.email = value,
                 decoration: InputDecoration(
