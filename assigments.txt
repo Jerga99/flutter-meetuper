@@ -36,3 +36,10 @@
    - avatar url with "meetup.image"
    - title with "meetup.title"
    - subtitle with "meetup.description"
+
+
+1. Create stateful "Register" and "Login" screens
+2. Register "routes" to "Login" and "Register" screens in "main.dart"
+3. In "Login" Screen Create button to navigate to "Register" screen
+4. In "Register" Screen Create button to navigate to "Login" screen
+5. Display "Login" screen as home screen
