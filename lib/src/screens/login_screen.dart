@@ -9,13 +9,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormFieldState<String>> _passwordKey = GlobalKey<FormFieldState<String>>();
+  final GlobalKey<FormFieldState<String>> _emailKey = GlobalKey<FormFieldState<String>>();
+
+  _submit() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      final password = _passwordKey.currentState.value;
+      final email = _emailKey.currentState.value;
+
+      print('password is: $password, email is: $email');
+    }
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(20.0),
         child: Form(
-          // Provide key
+          key: _formKey,
           child: Column(
             children: [
               Container(
@@ -29,12 +42,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               TextFormField(
+                key: _emailKey,
                 style: Theme.of(context).textTheme.headline,
                 decoration: InputDecoration(
                   hintText: 'Email Address'
                 ),
               ),
               TextFormField(
+                key: _passwordKey,
                 style: Theme.of(context).textTheme.headline,
                 decoration: InputDecoration(
                   hintText: 'Password'
@@ -47,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   textColor: Colors.white,
                   color: Theme.of(context).primaryColor,
                   child: const Text('Submit'),
-                  onPressed: () => {},
+                  onPressed: _submit,
                 )
               )
             ],
