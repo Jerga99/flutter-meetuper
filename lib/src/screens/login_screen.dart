@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/models/forms.dart';
 import 'package:flutter_meetuper/src/screens/meetup_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/register_screen.dart';
+import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 import 'package:flutter_meetuper/src/utils/validators.dart';
 
 class LoginScreen extends StatefulWidget {
 
   static final String route = '/login';
+  final AuthApiService authApi = AuthApiService();
 
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -25,9 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   initState() {
     super.initState();
-    // _emailController.addListener(() {
-    //   print(_emailController.text);
-    // });
   }
 
   @override
@@ -41,8 +40,12 @@ class _LoginScreenState extends State<LoginScreen> {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
+      widget.authApi
+        .login(_loginData)
+        .then((data) {
+          print(data);
+        });
 
-      print('password is: ${_loginData.password}, email is: ${_loginData.email}');
     } else {
       setState(() => _autovalidate = true);
     }
