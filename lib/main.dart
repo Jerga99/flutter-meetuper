@@ -16,6 +16,7 @@ class MeetuperApp extends StatelessWidget {
       // home: CounterHomeScreen(title: appTitle),
       home: LoginScreen(),
       routes: {
+        MeetupHomeScreen.route: (context) => MeetupHomeScreen(),
         LoginScreen.route: (context) => LoginScreen(),
         RegisterScreen.route: (context) => RegisterScreen(),
       },

@@ -12,6 +12,7 @@ class MeetupDetailArguments {
 
 
 class MeetupHomeScreen extends StatefulWidget {
+  static final String route = '/meetups';
   final MeetupApiService _api = MeetupApiService();
 
   MeetupHomeScreenState createState() => MeetupHomeScreenState();

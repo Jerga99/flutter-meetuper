@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetuper/src/screens/meetup_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 margin: EdgeInsets.only(bottom: 15.0),
@@ -55,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'Password'
                 ),
               ),
+              _buildLinks(),
               Container(
                 alignment: Alignment(-1.0, 0.0),
                 margin: EdgeInsets.only(top: 10.0),
@@ -70,6 +73,35 @@ class _LoginScreenState extends State<LoginScreen> {
         )
       ),
       appBar: AppBar(title: Text('Login')),
+    );
+  }
+
+  Widget _buildLinks() {
+    return Padding(
+      padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, RegisterScreen.route),
+            child: Text(
+              'Not Registered yet? Register Now!',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor
+              )
+            ),
+          ),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, MeetupHomeScreen.route),
+            child: Text(
+              'Continue to Home Page',
+              style: TextStyle(
+                color: Theme.of(context).primaryColor
+              )
+            ),
+          )
+        ],
+      )
     );
   }
 }
