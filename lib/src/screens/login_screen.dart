@@ -16,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormFieldState<String>> _emailKey = GlobalKey<FormFieldState<String>>();
 
   LoginFormData _loginData = LoginFormData();
+  bool _autovalidate = false;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -41,6 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
       form.save();
 
       print('password is: ${_loginData.password}, email is: ${_loginData.email}');
+    } else {
+      setState(() => _autovalidate = true);
     }
   }
 
@@ -50,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.all(20.0),
         child: Form(
           key: _formKey,
+          autovalidate: _autovalidate,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -66,6 +70,15 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 key: _emailKey,
                 style: Theme.of(context).textTheme.headline,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter an email!';
+                  }
+
+                  if (value.length < 8) {
+                    return 'Minimum length of email is 8 characters!';
+                  }
+                },
                 onSaved: (value) => _loginData.email = value,
                 decoration: InputDecoration(
                   hintText: 'Email Address'
@@ -74,6 +87,15 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 key: _passwordKey,
                 style: Theme.of(context).textTheme.headline,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a password!';
+                  }
+
+                  if (value.length < 8) {
+                    return 'Minimum length of passoword is 8 characters!';
+                  }
+                },
                 onSaved: (value) => _loginData.password = value,
                 decoration: InputDecoration(
                   hintText: 'Password'
