@@ -71,14 +71,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _emailKey,
                 style: Theme.of(context).textTheme.headline,
                 validator: (value) {
-                  final reqErrorMessage = requiredValidator(value, 'email');
-                  if (reqErrorMessage != null) return reqErrorMessage;
-
-                  final minErrorMessage = minLengthValidator(value, 'email');
-                  if (minErrorMessage != null) return minErrorMessage;
-
-                  final emailErrorMessage = emailValidator(value);
-                  if (emailErrorMessage != null) return emailErrorMessage;
+                  return composeValidators(value,
+                                   'email',
+                                   [requiredValidator, minLengthValidator, emailValidator]);
                 },
                 onSaved: (value) => _loginData.email = value,
                 decoration: InputDecoration(
