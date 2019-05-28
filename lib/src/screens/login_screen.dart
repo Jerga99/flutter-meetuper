@@ -14,11 +14,32 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormFieldState<String>> _passwordKey = GlobalKey<FormFieldState<String>>();
   final GlobalKey<FormFieldState<String>> _emailKey = GlobalKey<FormFieldState<String>>();
 
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  initState() {
+    super.initState();
+    _emailController.addListener(() {
+      print(_emailController.text);
+    });
+  }
+
+  @override
+  dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   _submit() {
     final form = _formKey.currentState;
     if (form.validate()) {
-      final password = _passwordKey.currentState.value;
-      final email = _emailKey.currentState.value;
+      // final password = _passwordKey.currentState.value;
+      // final email = _emailKey.currentState.value;
+
+      final password = _passwordController.text;
+      final email = _emailController.text;
 
       print('password is: $password, email is: $email');
     }
@@ -46,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 key: _emailKey,
                 style: Theme.of(context).textTheme.headline,
+                controller: _emailController,
                 decoration: InputDecoration(
                   hintText: 'Email Address'
                 ),
@@ -53,6 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 key: _passwordKey,
                 style: Theme.of(context).textTheme.headline,
+                controller: _passwordController,
                 decoration: InputDecoration(
                   hintText: 'Password'
                 ),
