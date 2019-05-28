@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     widget.authApi
       .login(_loginData)
       .then((data) {
-        print(data);
+        Navigator.pushNamed(context, MeetupHomeScreen.route);
       })
       .catchError((res) {
         Scaffold.of(_scaffoldContext).showSnackBar(SnackBar(
@@ -96,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextFormField(
                     key: _passwordKey,
+                    obscureText: true,
                     style: Theme.of(context).textTheme.headline,
                     validator: composeValidators(
                                   'password',
