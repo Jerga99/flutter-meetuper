@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   LoginFormData _loginData = LoginFormData();
   bool _autovalidate = false;
+  BuildContext _scaffoldContext;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -36,18 +37,24 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  _submit() {
+  void _login() {
+    widget.authApi
+      .login(_loginData)
+      .then((data) {
+        print(data);
+      })
+      .catchError((res) {
+        Scaffold.of(_scaffoldContext).showSnackBar(SnackBar(
+          content: Text(res['errors']['message'])
+        ));
+      });
+  }
+
+  void _submit() {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
-      widget.authApi
-        .login(_loginData)
-        .then((data) {
-          print(data);
-        })
-        .catchError((error) {
-          print(error);
-        });
+      _login();
 
     } else {
       setState(() => _autovalidate = true);
@@ -56,59 +63,64 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          autovalidate: _autovalidate,
-          child: ListView(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 15.0),
-                child: Text(
-                  'Login And Explore',
-                  style: TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold
+      body: Builder(
+        builder: (context) {
+          _scaffoldContext = context;
+          return Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Form(
+              key: _formKey,
+              autovalidate: _autovalidate,
+              child: ListView(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15.0),
+                    child: Text(
+                      'Login And Explore',
+                      style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
                   ),
-                ),
+                  TextFormField(
+                    key: _emailKey,
+                    style: Theme.of(context).textTheme.headline,
+                    validator: composeValidators(
+                                  'email',
+                                  [requiredValidator, minLengthValidator, emailValidator]),
+                    onSaved: (value) => _loginData.email = value,
+                    decoration: InputDecoration(
+                      hintText: 'Email Address'
+                    ),
+                  ),
+                  TextFormField(
+                    key: _passwordKey,
+                    style: Theme.of(context).textTheme.headline,
+                    validator: composeValidators(
+                                  'password',
+                                  [requiredValidator, minLengthValidator]),
+                    onSaved: (value) => _loginData.password = value,
+                    decoration: InputDecoration(
+                      hintText: 'Password'
+                    ),
+                  ),
+                  _buildLinks(),
+                  Container(
+                    alignment: Alignment(-1.0, 0.0),
+                    margin: EdgeInsets.only(top: 10.0),
+                    child: RaisedButton(
+                      textColor: Colors.white,
+                      color: Theme.of(context).primaryColor,
+                      child: const Text('Submit'),
+                      onPressed: _submit,
+                    )
+                  )
+                ],
               ),
-              TextFormField(
-                key: _emailKey,
-                style: Theme.of(context).textTheme.headline,
-                validator: composeValidators(
-                              'email',
-                              [requiredValidator, minLengthValidator, emailValidator]),
-                onSaved: (value) => _loginData.email = value,
-                decoration: InputDecoration(
-                  hintText: 'Email Address'
-                ),
-              ),
-              TextFormField(
-                key: _passwordKey,
-                style: Theme.of(context).textTheme.headline,
-                validator: composeValidators(
-                              'password',
-                              [requiredValidator, minLengthValidator]),
-                onSaved: (value) => _loginData.password = value,
-                decoration: InputDecoration(
-                  hintText: 'Password'
-                ),
-              ),
-              _buildLinks(),
-              Container(
-                alignment: Alignment(-1.0, 0.0),
-                margin: EdgeInsets.only(top: 10.0),
-                child: RaisedButton(
-                  textColor: Colors.white,
-                  color: Theme.of(context).primaryColor,
-                  child: const Text('Submit'),
-                  onPressed: _submit,
-                )
-              )
-            ],
-          ),
-        )
+            )
+          );
+        }
       ),
       appBar: AppBar(title: Text('Login')),
     );
