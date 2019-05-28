@@ -8,7 +8,7 @@ import 'dart:io' show Platform;
 
 class AuthApiService {
   final String url = Platform.isIOS ? 'http://localhost:3001/api/v1' : 'http://10.0.2.2:3001/api/v1';
-  String _token;
+  String _token = '';
   User _authUser;
 
   static final AuthApiService _singleton = AuthApiService._internal();
