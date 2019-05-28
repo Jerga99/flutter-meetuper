@@ -23,15 +23,17 @@ String minLengthValidator(String value, String field) {
   return null;
 }
 
-String composeValidators(String value, String field, List<Function> validators) {
-  if(validators != null && validators is List && validators.length > 0) {
-    for (var validator in validators) {
-      final errMessage = validator(value, field) as String;
-      if (errMessage != null) {
-        return errMessage;
+Function(String) composeValidators(String field, List<Function> validators) {
+  return (value) {
+    if(validators != null && validators is List && validators.length > 0) {
+      for (var validator in validators) {
+        final errMessage = validator(value, field) as String;
+        if (errMessage != null) {
+          return errMessage;
+        }
       }
     }
-  }
 
-  return null;
+    return null;
+  };
 }
