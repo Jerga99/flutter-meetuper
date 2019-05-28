@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
 import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
+import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 
 class MeetupDetailArguments {
   final String id;
@@ -52,12 +53,31 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
 }
 
 class _MeetupTitle extends StatelessWidget {
+  final AuthApiService auth = AuthApiService();
+
+  _buildUserWelcome() {
+    final isAuth = auth.isAuthenticated();
+
+    if (isAuth) {
+      final user = auth.authUser;
+      return Container(
+        child: Text('Welcome ${user.username}')
+      );
+    } else {
+      return Container(width: 0, height: 0);
+    }
+  }
 
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.all(20.0),
-      child: Text('Featured Meetup', style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
+      child: Column(
+        children: [
+          Text('Featured Meetups', style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold)),
+          _buildUserWelcome()
+        ]
+      )
     );
   }
 }

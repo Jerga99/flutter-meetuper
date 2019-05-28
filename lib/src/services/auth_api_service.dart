@@ -21,10 +21,19 @@ class AuthApiService {
   set authUser(Map<String, dynamic> value) {
     _authUser = User.fromJSON(value);
   }
+  get authUser => _authUser;
 
   bool _saveToken(String token) {
     if (token != null) {
       _token = token;
+      return true;
+    }
+
+    return false;
+  }
+
+  bool isAuthenticated() {
+    if (_token.isNotEmpty) {
       return true;
     }
 
