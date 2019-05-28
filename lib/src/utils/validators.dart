@@ -6,3 +6,23 @@ String emailValidator(String value) {
   final hasMatch = regex.hasMatch(value);
   return hasMatch ? null : 'Please enter a valid email address';
 }
+
+String requiredValidator(String value, String field) {
+  if (value.isEmpty) {
+    return 'Please enter $field!';
+  }
+
+  return null;
+}
+
+String minLengthValidator(String value, String field) {
+  if (value.length < 8) {
+    return 'Minimum length of $field is 8 characters!';
+  }
+
+  return null;
+}
+
+composeValidators(validators) {
+
+}

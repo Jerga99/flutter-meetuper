@@ -71,15 +71,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _emailKey,
                 style: Theme.of(context).textTheme.headline,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter an email!';
-                  }
+                  final reqErrorMessage = requiredValidator(value, 'email');
+                  if (reqErrorMessage != null) return reqErrorMessage;
 
-                  if (value.length < 8) {
-                    return 'Minimum length of email is 8 characters!';
-                  }
+                  final minErrorMessage = minLengthValidator(value, 'email');
+                  if (minErrorMessage != null) return minErrorMessage;
 
-                  return emailValidator(value);
+                  final emailErrorMessage = emailValidator(value);
+                  if (emailErrorMessage != null) return emailErrorMessage;
                 },
                 onSaved: (value) => _loginData.email = value,
                 decoration: InputDecoration(
@@ -90,13 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _passwordKey,
                 style: Theme.of(context).textTheme.headline,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter a password!';
-                  }
-
-                  if (value.length < 8) {
-                    return 'Minimum length of passoword is 8 characters!';
-                  }
+                  var errorMessage;
+                  errorMessage = requiredValidator(value, 'password');
+                  errorMessage = minLengthValidator(value, 'password');
+                  return errorMessage;
                 },
                 onSaved: (value) => _loginData.password = value,
                 decoration: InputDecoration(
