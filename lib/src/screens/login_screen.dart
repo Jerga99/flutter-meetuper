@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetuper/src/models/forms.dart';
 import 'package:flutter_meetuper/src/screens/meetup_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/register_screen.dart';
 
@@ -14,15 +15,17 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormFieldState<String>> _passwordKey = GlobalKey<FormFieldState<String>>();
   final GlobalKey<FormFieldState<String>> _emailKey = GlobalKey<FormFieldState<String>>();
 
+  LoginFormData _loginData = LoginFormData();
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   initState() {
     super.initState();
-    _emailController.addListener(() {
-      print(_emailController.text);
-    });
+    // _emailController.addListener(() {
+    //   print(_emailController.text);
+    // });
   }
 
   @override
@@ -35,13 +38,9 @@ class _LoginScreenState extends State<LoginScreen> {
   _submit() {
     final form = _formKey.currentState;
     if (form.validate()) {
-      // final password = _passwordKey.currentState.value;
-      // final email = _emailKey.currentState.value;
+      form.save();
 
-      final password = _passwordController.text;
-      final email = _emailController.text;
-
-      print('password is: $password, email is: $email');
+      print('password is: ${_loginData.password}, email is: ${_loginData.email}');
     }
   }
 
@@ -67,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 key: _emailKey,
                 style: Theme.of(context).textTheme.headline,
-                controller: _emailController,
+                onSaved: (value) => _loginData.email = value,
                 decoration: InputDecoration(
                   hintText: 'Email Address'
                 ),
@@ -75,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextFormField(
                 key: _passwordKey,
                 style: Theme.of(context).textTheme.headline,
-                controller: _passwordController,
+                onSaved: (value) => _loginData.password = value,
                 decoration: InputDecoration(
                   hintText: 'Password'
                 ),
