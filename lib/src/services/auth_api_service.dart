@@ -1,6 +1,6 @@
 
 import 'package:flutter_meetuper/src/models/forms.dart';
-import 'package:flutter_meetuper/src/models/meetup.dart';
+import 'package:flutter_meetuper/src/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io' show Platform;
@@ -9,6 +9,7 @@ import 'dart:io' show Platform;
 class AuthApiService {
   final String url = Platform.isIOS ? 'http://localhost:3001/api/v1' : 'http://10.0.2.2:3001/api/v1';
   String _token;
+  User _authUser;
 
   static final AuthApiService _singleton = AuthApiService._internal();
 
@@ -16,6 +17,10 @@ class AuthApiService {
     return _singleton;
   }
   AuthApiService._internal();
+
+  set authUser(Map<String, dynamic> value) {
+    _authUser = User.fromJSON(value);
+  }
 
   bool _saveToken(String token) {
     if (token != null) {
@@ -36,7 +41,7 @@ class AuthApiService {
 
     if (res.statusCode == 200) {
       _saveToken(parsedData['token']);
-      print(_token);
+      authUser = parsedData;
       return parsedData;
     } else {
       return Future.error(parsedData);
