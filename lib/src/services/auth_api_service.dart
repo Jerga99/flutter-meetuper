@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io' show Platform;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class AuthApiService {
   final String url = Platform.isIOS ? 'http://localhost:3001/api/v1' : 'http://10.0.2.2:3001/api/v1';
@@ -23,8 +25,23 @@ class AuthApiService {
   }
   get authUser => _authUser;
 
-  bool _saveToken(String token) {
+  Future<String> get token async {
+    if (_token.isNotEmpty) {
+      return _token;
+    } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      return prefs.getString('token');
+    }
+  }
+
+  Future<bool> _persistToken(token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString('token', token);
+  }
+
+  Future<bool> _saveToken(String token) async {
     if (token != null) {
+      await _persistToken(token);
       _token = token;
       return true;
     }
@@ -32,8 +49,9 @@ class AuthApiService {
     return false;
   }
 
-  bool isAuthenticated() {
-    if (_token.isNotEmpty) {
+  Future<bool> isAuthenticated() async {
+    final token = await this.token;
+    if (token.isNotEmpty) {
       return true;
     }
 

@@ -55,8 +55,8 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
 class _MeetupTitle extends StatelessWidget {
   final AuthApiService auth = AuthApiService();
 
-  _buildUserWelcome() {
-    final isAuth = auth.isAuthenticated();
+  Future<Widget> _buildUserWelcome() async {
+    final isAuth = await auth.isAuthenticated();
     if (isAuth) {
       final user = auth.authUser;
       return Container(
