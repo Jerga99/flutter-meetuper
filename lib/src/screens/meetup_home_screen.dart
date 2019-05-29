@@ -73,7 +73,10 @@ class _MeetupTitle extends StatelessWidget {
                 Text('Welcome ${user.username}'),
                 Spacer(),
                 GestureDetector(
-                  onTap: auth.logout,
+                  onTap: () {
+                    auth.logout()
+                      .then((isLogout) => Navigator.pushNamedAndRemoveUntil(context, '/login', (Route<dynamic> route) => false));
+                  },
                   child: Text(
                     'Logout',
                     style: TextStyle(
