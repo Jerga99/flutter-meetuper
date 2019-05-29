@@ -12,31 +12,34 @@ class CounterHomeScreen extends StatefulWidget {
 }
 
 class _CounterHomeScreenState extends State<CounterHomeScreen> {
-  final StreamController<int> _streamController = StreamController<int>();
+  final StreamController<int> _streamController = StreamController<int>.broadcast();
   int _counter = 0;
 
   initState() {
     super.initState();
-    _streamController.stream.listen((data) {
-      print(data);
-    });
+    _streamController.stream
+      .skip(5)
+      .map((data) {
+        print(data);
+        return data * 2;
+      })
+      // .where((data) => data < 15
+      .map((data) => data - 4)
+      .map((data) => data * data)
+      .listen((data) {
+        print('LISTENER IN INIT STATE FUNCTION');
+        print(data);
+      });
   }
 
   _increment() {
     // setState(() {
     //   _counter++;
     // });
-    _streamController.sink.add(1);
-    _streamController.sink.add(2);
-    _streamController.sink.add(3);
+    _streamController.sink.add(10);
   }
 
   Widget build(BuildContext context) {
-    _streamController.stream.listen((data) {
-      print('LISTENER IN BUILD FUNCTION');
-      print(data);
-    });
-    print('Calling build!');
     return Scaffold(
       body: Center(
         child: Column(
