@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/models/arguments.dart';
+import 'package:flutter_meetuper/src/screens/counter_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/login_screen.dart';
 import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
 import 'package:flutter_meetuper/src/screens/meetup_home_screen.dart';
@@ -14,8 +15,8 @@ class MeetuperApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.blue),
-      // home: CounterHomeScreen(title: appTitle),
-      home: LoginScreen(),
+      home: CounterHomeScreen(title: appTitle),
+      // home: LoginScreen(),
       routes: {
         MeetupHomeScreen.route: (context) => MeetupHomeScreen(),
         RegisterScreen.route: (context) => RegisterScreen(),
