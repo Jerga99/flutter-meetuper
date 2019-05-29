@@ -66,6 +66,23 @@ class AuthApiService {
     return false;
   }
 
+  _removeAuthData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    _token = '';
+    _authUser = null;
+  }
+
+  Future<bool> logout() async {
+    try {
+      await _removeAuthData();
+      return true;
+    } catch(error) {
+      print(error);
+      return false;
+    }
+  }
+
   Future<Map<String, dynamic>> login(LoginFormData loginData) async {
     final body = json.encode(loginData.toJSON());
     print(body);

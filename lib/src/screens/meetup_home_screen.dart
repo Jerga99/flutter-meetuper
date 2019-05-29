@@ -70,7 +70,17 @@ class _MeetupTitle extends StatelessWidget {
                       backgroundImage: NetworkImage(user.avatar),
                     )
                   : Container(width: 0, height: 0),
-                Text('Welcome ${user.username}')
+                Text('Welcome ${user.username}'),
+                Spacer(),
+                GestureDetector(
+                  onTap: auth.logout,
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor
+                    )
+                  ),
+                )
               ],
             )
           );
