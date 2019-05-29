@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_meetuper/src/models/arguments.dart';
 import 'package:flutter_meetuper/src/models/forms.dart';
 import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 import 'package:flutter_meetuper/src/utils/validators.dart';
@@ -16,16 +17,23 @@ class RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // 2. Create autovalidate
   bool _autovalidate = false;
+  BuildContext _scaffoldContext;
   // 3. Create instance of RegisterFormData
   RegisterFormData _registerData = RegisterFormData();
   // 4. Create Register function and print all of the data
 
   void _handleSuccess(data) {
-    print('Yeeeey!');
+    Navigator
+      .pushNamedAndRemoveUntil(context,
+                               '/login',
+                               (Route<dynamic> route) => false,
+                               arguments: LoginScreenArguments('You have been succefuly registered. Feel free to login now (:'));
   }
 
-  void _handleError(error) {
-    print(error);
+  void _handleError(res) {
+    Scaffold.of(_scaffoldContext).showSnackBar(SnackBar(
+      content: Text(res['errors']['message'])
+    ));
   }
 
   void _register() {
@@ -53,6 +61,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       ),
       body: Builder(
         builder: (context) {
+          _scaffoldContext = context;
           return Padding(
             padding: EdgeInsets.all(20.0),
             child: Form(
@@ -146,7 +155,9 @@ class RegisterScreenState extends State<RegisterScreen> {
         textColor: Colors.white,
         color: Theme.of(context).primaryColor,
         child: const Text('Submit'),
-        onPressed: _submit,
+        onPressed: () {
+          _handleSuccess('askdjnsakj');
+        },
       )
     );
   }

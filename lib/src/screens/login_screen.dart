@@ -6,9 +6,11 @@ import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 import 'package:flutter_meetuper/src/utils/validators.dart';
 
 class LoginScreen extends StatefulWidget {
-
+  final String message;
   static final String route = '/login';
   final AuthApiService authApi = AuthApiService();
+
+  LoginScreen({this.message});
 
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -28,6 +30,15 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   initState() {
     super.initState();
+    _checkForMessage();
+  }
+
+  void _checkForMessage() {
+    if (widget.message != null && widget.message.isNotEmpty) {
+      Scaffold.of(_scaffoldContext).showSnackBar(SnackBar(
+        content: Text(widget.message)
+      ));
+    }
   }
 
   @override
