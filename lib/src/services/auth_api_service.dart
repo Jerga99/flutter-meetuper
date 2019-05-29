@@ -54,8 +54,13 @@ class AuthApiService {
     final token = await this.token;
     if (token.isNotEmpty) {
       final decodedToken = decode(token);
-      authUser = decodedToken;
-      return true;
+      final isValidToken = decodedToken['exp'] * 1000 > DateTime.now().millisecond;
+
+      if (isValidToken) {
+        authUser = decodedToken;
+      }
+
+      return isValidToken;
     }
 
     return false;
