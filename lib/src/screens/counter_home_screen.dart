@@ -13,38 +13,20 @@ class CounterHomeScreen extends StatefulWidget {
 
 class _CounterHomeScreenState extends State<CounterHomeScreen> {
   final StreamController<int> _streamController = StreamController<int>.broadcast();
-  // final StreamTransformer<int, int> _streamTransformer = StreamTransformer.fromHandlers(
-  //   handleData: (int data, EventSink<int> sink) {
-  //     print('CALLING FROM HANDLE DATA!!!!!!!');
-  //     print(data);
-  //     sink.add(data ~/ 2);
-  //   }
-  // );
+  final StreamController<int> _counterController = StreamController<int>.broadcast();
   int _counter = 0;
 
   initState() {
     super.initState();
     _streamController.stream
-      // .skip(1)
-      // .map((data) {
-      //   // print(data);
-      //   return data * 2;
-      // })
-      // // .where((data) => data < 15
-      // .map((data) => data - 4)
-      // .map((data) => data * data)
-      // .transform(_streamTransformer)
       .listen((int number) {
         _counter += number;
-        print(_counter);
+        _counterController.sink.add(_counter);
       });
   }
 
   _increment() {
-    // setState(() {
-    //   _counter++;
-    // });
-    _streamController.sink.add(10);
+    _streamController.sink.add(15);
   }
 
   Widget build(BuildContext context) {
@@ -58,13 +40,37 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
               textDirection: TextDirection.ltr,
               style: TextStyle(fontSize: 15.0)
             ),
-            Text(
-              'Counter: $_counter',
-              textDirection: TextDirection.ltr,
-              style: TextStyle(fontSize: 30.0)
+            StreamBuilder(
+              stream: _counterController.stream,
+              initialData: _counter,
+              builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    'Counter: ${snapshot.data}',
+                    textDirection: TextDirection.ltr,
+                    style: TextStyle(fontSize: 30.0)
+                  );
+                } else {
+                  return Text(
+                    'Counter is sad :( No data',
+                    textDirection: TextDirection.ltr,
+                    style: TextStyle(fontSize: 30.0)
+                  );
+                }
+              },
             ),
             RaisedButton(
-              child: Text('Go To Detail'),
+              child: StreamBuilder(
+                stream: _counterController.stream,
+                initialData: _counter,
+                builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+                  if (snapshot.hasData) {
+                    return Text('Counter - ${snapshot.data}');
+                  } else {
+                    return Text('Counter is sad :(');
+                  }
+                },
+              ),
               onPressed: () => Navigator.pushNamed(context, '/meetupDetail'),
             )
           ],
