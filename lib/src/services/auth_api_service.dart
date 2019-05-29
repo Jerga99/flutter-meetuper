@@ -100,4 +100,18 @@ class AuthApiService {
     }
   }
 
+  Future<bool> register(RegisterFormData registerData) async {
+    final body = json.encode(registerData.toJSON());
+    final res = await http.post('$url/users/register',
+                                 headers: {"Content-Type": "application/json"},
+                                 body: body);
+    final parsedData = Map<String, dynamic>.from(json.decode(res.body));
+
+    if (res.statusCode == 200) {
+      return true;
+    } else {
+      return Future.error(parsedData);
+    }
+  }
+
 }
