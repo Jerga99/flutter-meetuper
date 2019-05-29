@@ -155,9 +155,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         textColor: Colors.white,
         color: Theme.of(context).primaryColor,
         child: const Text('Submit'),
-        onPressed: () {
-          _handleSuccess('askdjnsakj');
-        },
+        onPressed: _submit,
       )
     );
   }

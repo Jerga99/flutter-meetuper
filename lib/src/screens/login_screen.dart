@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   initState() {
     super.initState();
-    _checkForMessage();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkForMessage());
   }
 
   void _checkForMessage() {
