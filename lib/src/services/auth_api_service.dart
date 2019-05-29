@@ -67,7 +67,7 @@ class AuthApiService {
     final parsedData = Map<String, dynamic>.from(json.decode(res.body));
 
     if (res.statusCode == 200) {
-      _saveToken(parsedData['token']);
+      await _saveToken(parsedData['token']);
       authUser = parsedData;
       return parsedData;
     } else {

@@ -55,26 +55,30 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
 class _MeetupTitle extends StatelessWidget {
   final AuthApiService auth = AuthApiService();
 
-  Future<Widget> _buildUserWelcome() async {
-    final isAuth = await auth.isAuthenticated();
-    if (isAuth) {
-      final user = auth.authUser;
-      return Container(
-        margin: EdgeInsets.only(top: 10.0),
-        child: Row(
-          children: <Widget>[
-            user.avatar != null
-              ? CircleAvatar(
-                  backgroundImage: NetworkImage(user.avatar),
-                )
-              : Container(width: 0, height: 0),
-            Text('Welcome ${user.username}')
-          ],
-        )
-      );
-    } else {
-      return Container(width: 0, height: 0);
-    }
+  Widget _buildUserWelcome() {
+    return FutureBuilder<bool>(
+      future: auth.isAuthenticated(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.hasData && snapshot.data) {
+          final user = auth.authUser;
+          return Container(
+            margin: EdgeInsets.only(top: 10.0),
+            child: Row(
+              children: <Widget>[
+                user.avatar != null
+                  ? CircleAvatar(
+                      backgroundImage: NetworkImage(user.avatar),
+                    )
+                  : Container(width: 0, height: 0),
+                Text('Welcome ${user.username}')
+              ],
+            )
+          );
+        } else {
+          return Container(width: 0, height: 0);
+        }
+      },
+    );
   }
 
   Widget build(BuildContext context) {
