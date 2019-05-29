@@ -13,22 +13,30 @@ class CounterHomeScreen extends StatefulWidget {
 
 class _CounterHomeScreenState extends State<CounterHomeScreen> {
   final StreamController<int> _streamController = StreamController<int>.broadcast();
+  // final StreamTransformer<int, int> _streamTransformer = StreamTransformer.fromHandlers(
+  //   handleData: (int data, EventSink<int> sink) {
+  //     print('CALLING FROM HANDLE DATA!!!!!!!');
+  //     print(data);
+  //     sink.add(data ~/ 2);
+  //   }
+  // );
   int _counter = 0;
 
   initState() {
     super.initState();
     _streamController.stream
-      .skip(5)
-      .map((data) {
-        print(data);
-        return data * 2;
-      })
-      // .where((data) => data < 15
-      .map((data) => data - 4)
-      .map((data) => data * data)
-      .listen((data) {
-        print('LISTENER IN INIT STATE FUNCTION');
-        print(data);
+      // .skip(1)
+      // .map((data) {
+      //   // print(data);
+      //   return data * 2;
+      // })
+      // // .where((data) => data < 15
+      // .map((data) => data - 4)
+      // .map((data) => data * data)
+      // .transform(_streamTransformer)
+      .listen((int number) {
+        _counter += number;
+        print(_counter);
       });
   }
 
