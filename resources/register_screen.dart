@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_meetuper/src/models/forms.dart';
-import 'package:flutter_meetuper/src/utils/validators.dart';
 
 class RegisterScreen extends StatefulWidget {
   static final String route = '/register';
@@ -11,22 +9,9 @@ class RegisterScreen extends StatefulWidget {
 
 class RegisterScreenState extends State<RegisterScreen> {
   // 1. Create GlobalKey for form
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // 2. Create autovalidate
-  bool _autovalidate = false;
   // 3. Create instance of RegisterFormData
-  RegisterFormData _registerData = RegisterFormData();
   // 4. Create Register function and print all of the data
-
-  void _register() {
-    final form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      print(_registerData.toJSON());
-    } else {
-      setState(() => _autovalidate = true);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +25,6 @@ class RegisterScreenState extends State<RegisterScreen> {
             padding: EdgeInsets.all(20.0),
             child: Form(
               // 5. Form Key
-              key: _formKey,
-              autovalidate: _autovalidate,
               child: ListView(
                 children: [
                   _buildTitle(),
@@ -51,25 +34,19 @@ class RegisterScreenState extends State<RegisterScreen> {
                       hintText: 'Name',
                     ),
                     // 6. Required Validator
-                    validator: composeValidators('name', [requiredValidator]),
                     // 7. onSaved - save data to registerFormData
-                    onSaved: (value) => _registerData.name = value,
                   ),
                   TextFormField(
                     style: Theme.of(context).textTheme.headline,
                     decoration: InputDecoration(
                       hintText: 'Username',
                     ),
-                    validator: composeValidators('username', [requiredValidator]),
-                    onSaved: (value) => _registerData.username = value,
                   ),
                   TextFormField(
                     style: Theme.of(context).textTheme.headline,
                     decoration: InputDecoration(
                       hintText: 'Email Address',
                     ),
-                    validator: composeValidators('email', [requiredValidator, emailValidator]),
-                    onSaved: (value) => _registerData.email = value,
                     keyboardType: TextInputType.emailAddress
                   ),
                   TextFormField(
@@ -77,7 +54,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                     decoration: InputDecoration(
                       hintText: 'Avatar Url',
                     ),
-                    onSaved: (value) => _registerData.avatar = value,
                     keyboardType: TextInputType.url
                   ),
                   TextFormField(
@@ -85,8 +61,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                     decoration: InputDecoration(
                       hintText: 'Password',
                     ),
-                    validator: composeValidators('password', [requiredValidator]),
-                    onSaved: (value) => _registerData.password = value,
                     obscureText: true,
                   ),
                   TextFormField(
@@ -94,8 +68,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                     decoration: InputDecoration(
                       hintText: 'Password Confirmation',
                     ),
-                    validator: composeValidators('password confirmation', [requiredValidator]),
-                    onSaved: (value) => _registerData.passwordConfirmation = value,
                     obscureText: true,
                   ),
                   _buildLinksSection(),
@@ -131,7 +103,6 @@ class RegisterScreenState extends State<RegisterScreen> {
         child: const Text('Submit'),
         onPressed: () {
           // 8. call register function and print data
-          _register();
         },
       )
     );
@@ -172,3 +143,22 @@ class RegisterScreenState extends State<RegisterScreen> {
 }
 
 
+
+class RegisterFormData {
+  String email = '';
+  String username = '';
+  String name = '';
+  String password = '';
+  String passwordConfirmation = '';
+  String avatar = '';
+
+  Map<String, dynamic> toJSON() =>
+    {
+      'email': email,
+      'username': username,
+      'name': name,
+      'password': password,
+      'passwordConfirmation': passwordConfirmation,
+      'avatar': avatar
+    };
+}
