@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
+import 'package:flutter_meetuper/src/blocs/meetup_bloc.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
 import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
-import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 
 class MeetupDetailArguments {
@@ -11,30 +12,20 @@ class MeetupDetailArguments {
   MeetupDetailArguments({this.id});
 }
 
-
 class MeetupHomeScreen extends StatefulWidget {
   static final String route = '/meetups';
-  final MeetupApiService _api = MeetupApiService();
-
   MeetupHomeScreenState createState() => MeetupHomeScreenState();
 }
 
 class MeetupHomeScreenState extends State<MeetupHomeScreen> {
   List<Meetup> meetups = [];
 
-  @override
-  initState() {
-    super.initState();
-    _fetchMeetups();
-  }
-
   void didChangeDependencies() {
     super.didChangeDependencies();
-  }
-
-  _fetchMeetups() async {
-    final meetups = await widget._api.fetchMeetups();
-    setState(() => this.meetups = meetups);
+    BlocProvider.of<MeetupBloc>(context).fetchMeetups();
+    // final meetupBloc = BlocProvider.of<MeetupBloc>(context);
+    // meetupBloc.fetchMeetups();
+    // meetupBloc.meetups.listen((data) => print(data));
   }
 
   Widget build(BuildContext context) {
@@ -42,7 +33,7 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
       body: Column(
         children: [
           _MeetupTitle(),
-          _MeetupList(meetups: meetups)
+          _MeetupList()
         ],
       ),
       appBar: AppBar(
@@ -154,19 +145,22 @@ class _MeetupCard extends StatelessWidget {
 }
 
 class _MeetupList extends StatelessWidget {
-  final List<Meetup> meetups;
-
-  _MeetupList({@required this.meetups});
-
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView.builder(
-        itemCount: meetups.length * 2,
-        itemBuilder: (BuildContext context, int i) {
-          if (i.isOdd) return Divider();
-          final index = i ~/ 2;
+      child: StreamBuilder<List<Meetup>>(
+        stream: BlocProvider.of<MeetupBloc>(context).meetups,
+        initialData: [],
+        builder: (BuildContext context, AsyncSnapshot<List<Meetup>> snapshot) {
+          var meetups = snapshot.data;
+          return ListView.builder(
+            itemCount: meetups.length * 2,
+            itemBuilder: (BuildContext context, int i) {
+              if (i.isOdd) return Divider();
+              final index = i ~/ 2;
 
-          return _MeetupCard(meetup: meetups[index]);
+              return _MeetupCard(meetup: meetups[index]);
+            },
+          );
         },
       )
     );
