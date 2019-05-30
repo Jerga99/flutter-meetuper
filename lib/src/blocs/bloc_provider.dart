@@ -6,7 +6,6 @@ abstract class BlocBase {
   void dispose();
 }
 
-
 class BlocProvider<T extends BlocBase> extends StatefulWidget {
 
   final T bloc;

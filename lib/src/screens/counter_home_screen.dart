@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/blocs/counter_bloc.dart';
 import 'package:flutter_meetuper/src/widgets/bottom_navigation.dart';
 
 class CounterHomeScreen extends StatefulWidget {
   final String _title;
-  final CounterBloc bloc;
 
-  CounterHomeScreen({String title, this.bloc}): _title = title;
+  CounterHomeScreen({String title}): _title = title;
 
   @override
   _CounterHomeScreenState createState() => _CounterHomeScreenState();
 }
 
 class _CounterHomeScreenState extends State<CounterHomeScreen> {
-  // CounterBloc counterBloc;
+  CounterBloc counterBloc;
 
   didChangeDependencies() {
     super.didChangeDependencies();
-    // counterBloc = CounterBlocProvider.of(context);
+    counterBloc = BlocProvider.of<CounterBloc>(context);
   }
 
   _increment() {
-    // counterBloc.increment(15);
-    widget.bloc.increment(20);
+    counterBloc.increment(15);
+    // widget.bloc.increment(20);
   }
 
   Widget build(BuildContext context) {
@@ -37,8 +37,8 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
               style: TextStyle(fontSize: 15.0)
             ),
             StreamBuilder(
-              // stream: counterBloc.counterStream,
-              stream: widget.bloc.counterStream,
+              stream: counterBloc.counterStream,
+              // stream: widget.bloc.counterStream,
               builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                 if (snapshot.hasData) {
                   return Text(
@@ -57,8 +57,8 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
             ),
             RaisedButton(
               child: StreamBuilder(
-                // stream: counterBloc.counterStream,
-                stream: widget.bloc.counterStream,
+                stream: counterBloc.counterStream,
+                // stream: widget.bloc.counterStream,
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                   if (snapshot.hasData) {
                     return Text('Counter - ${snapshot.data}');
