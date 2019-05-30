@@ -4,7 +4,12 @@ import 'dart:async';
 
 class CounterBloc {
   final StreamController<int> _streamController = StreamController<int>.broadcast();
-  final StreamController<int> counterController = StreamController<int>.broadcast();
+  final StreamController<int> _counterController = StreamController<int>.broadcast();
+
+  Stream<int> get counterStream => _counterController.stream;
+  StreamSink<int> get counterSink => _counterController.sink;
+
+
   int _counter = 0;
 
   CounterBloc() {
@@ -14,7 +19,7 @@ class CounterBloc {
 
   _handleIncrement(int number) {
     _counter += number;
-    counterController.sink.add(_counter);
+    counterSink.add(_counter);
   }
 
   increment(int incrementer) {
@@ -23,7 +28,7 @@ class CounterBloc {
 
   dispose() {
     _streamController.close();
-    counterController.close();
+    _counterController.close();
   }
 }
 

@@ -33,7 +33,7 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
               style: TextStyle(fontSize: 15.0)
             ),
             StreamBuilder(
-              stream: counterBloc.counterController.stream,
+              stream: counterBloc.counterStream,
               builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                 if (snapshot.hasData) {
                   return Text(
@@ -52,7 +52,7 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
             ),
             RaisedButton(
               child: StreamBuilder(
-                stream: counterBloc.counterController.stream,
+                stream: counterBloc.counterStream,
                 builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                   if (snapshot.hasData) {
                     return Text('Counter - ${snapshot.data}');
