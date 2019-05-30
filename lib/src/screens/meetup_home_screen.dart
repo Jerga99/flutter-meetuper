@@ -28,6 +28,10 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
     _fetchMeetups();
   }
 
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
   _fetchMeetups() async {
     final meetups = await widget._api.fetchMeetups();
     setState(() => this.meetups = meetups);
