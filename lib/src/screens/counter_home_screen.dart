@@ -20,12 +20,6 @@ class _CounterHomeScreenState extends State<CounterHomeScreen> {
     // counterBloc = CounterBlocProvider.of(context);
   }
 
-  dispose() {
-    // counterBloc.dispose();
-    widget.bloc.dispose();
-    super.dispose();
-  }
-
   _increment() {
     // counterBloc.increment(15);
     widget.bloc.increment(20);
