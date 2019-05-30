@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+Type _typeOf<T>() => T;
+
+abstract class BlocBase {
+  void dispose();
+}
 
 
-class BlocProvider<T> extends StatefulWidget {
+class BlocProvider<T extends BlocBase> extends StatefulWidget {
 
   final T bloc;
   final Widget child;
@@ -15,13 +20,22 @@ class BlocProvider<T> extends StatefulWidget {
 
   _BlocProviderState<T> createState() => _BlocProviderState<T>();
 
-  //  static CounterBloc of(BuildContext context) {
-  //   _CounterBlocProviderInherited provider =
-  //     (context.ancestorInheritedElementForWidgetOfExactType(_CounterBlocProviderInherited)?.widget
-  //    as _CounterBlocProviderInherited);
-}
+   static T of<T extends BlocBase>(BuildContext context) {
+     Type type = _typeOf<_BlocProviderInherited<T>>();
+    _BlocProviderInherited<T> provider =
+      (context.ancestorInheritedElementForWidgetOfExactType(type)?.widget
+     as _BlocProviderInherited<T>);
 
-class _BlocProviderState<T> extends State<BlocProvider<T>> {
+     return provider?.bloc;
+    }
+  }
+
+class _BlocProviderState<T extends BlocBase> extends State<BlocProvider<T>> {
+
+  dispose() {
+    widget.bloc?.dispose();
+    super.dispose();
+  }
 
   Widget build(BuildContext context) {
     return _BlocProviderInherited<T>(
@@ -31,7 +45,7 @@ class _BlocProviderState<T> extends State<BlocProvider<T>> {
   }
 }
 
-class _BlocProviderInherited<T> extends InheritedWidget {
+class _BlocProviderInherited<T extends BlocBase> extends InheritedWidget {
   final T bloc;
 
   _BlocProviderInherited({
