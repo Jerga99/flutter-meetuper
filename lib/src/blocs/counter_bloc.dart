@@ -1,6 +1,6 @@
 
-
 import 'dart:async';
+import 'package:flutter/material.dart';
 
 class CounterBloc {
   final StreamController<int> _streamController = StreamController<int>.broadcast();
@@ -32,7 +32,20 @@ class CounterBloc {
   }
 }
 
-final CounterBloc counterBloc = CounterBloc();
+class CounterBlocProvider extends InheritedWidget {
+  final CounterBloc bloc;
+
+  CounterBlocProvider({Widget child, Key key})
+    : bloc = CounterBloc(),
+      super(key: key, child: child);
+
+  bool updateShouldNotify(InheritedWidget oldWidget) => true;
+
+  static CounterBloc of(BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(CounterBlocProvider)
+     as CounterBlocProvider).bloc;
+  }
+}
 
 
 
