@@ -24,6 +24,23 @@ class BlocProvider<T> extends StatefulWidget {
 class _BlocProviderState<T> extends State<BlocProvider<T>> {
 
   Widget build(BuildContext context) {
-    return null;
+    return _BlocProviderInherited<T>(
+      bloc: widget.bloc,
+      child: widget.child
+    );
   }
 }
+
+class _BlocProviderInherited<T> extends InheritedWidget {
+  final T bloc;
+
+  _BlocProviderInherited({
+    Key key,
+    @required Widget child,
+    @required this.bloc
+  }): super(key: key, child: child);
+
+  bool updateShouldNotify(InheritedWidget oldWidget) => true;
+}
+
+
