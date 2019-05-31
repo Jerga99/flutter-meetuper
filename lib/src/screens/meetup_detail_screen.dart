@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/blocs/meetup_bloc.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
+import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 import 'package:flutter_meetuper/src/widgets/bottom_navigation.dart';
 
@@ -58,6 +59,40 @@ class MeetupDetailScreenState extends State<MeetupDetailScreen> {
       ),
       appBar: AppBar(title: Text('Meetup Detail')),
       bottomNavigationBar: BottomNavigation(),
+      floatingActionButton: _MeetupActionButton(),
+    );
+  }
+}
+
+class _MeetupActionButton extends StatelessWidget {
+  final AuthApiService auth = AuthApiService();
+
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: auth.isAuthenticated(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.hasData && snapshot.data) {
+          // TODO: Check if user is meetup owner and check if user is already member
+          final isMember = false;
+          if (isMember) {
+            return FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.cancel),
+              backgroundColor: Colors.red,
+              tooltip: 'Leave Meetup',
+            );
+          } else {
+            return FloatingActionButton(
+              onPressed: () {},
+              child: Icon(Icons.person_add),
+              backgroundColor: Colors.green,
+              tooltip: 'Join Meetup',
+            );
+          }
+        } else {
+          return Container(width: 0, height: 0);
+        }
+      },
     );
   }
 }
