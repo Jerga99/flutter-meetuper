@@ -44,7 +44,7 @@ class MeetuperApp extends StatelessWidget {
           final LoginScreenArguments arguments = settings.arguments;
 
           return MaterialPageRoute(
-            builder: (context) => LoginScreen(message: arguments.message)
+            builder: (context) => LoginScreen(message: arguments?.message)
           );
         }
       }
