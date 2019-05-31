@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
+import 'package:flutter_meetuper/src/blocs/meetup_bloc.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 import 'package:flutter_meetuper/src/widgets/bottom_navigation.dart';
@@ -15,44 +17,45 @@ class MeetupDetailScreen extends StatefulWidget {
 }
 
 class MeetupDetailScreenState extends State<MeetupDetailScreen> {
-  Meetup meetup;
 
-  initState() {
-    super.initState();
-    _fetchMeetup();
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    BlocProvider.of<MeetupBloc>(context).fetchMeetup(widget.meetupId);
   }
-
-  _fetchMeetup() async {
-    final meetup = await widget.api.fetchMeetupById(widget.meetupId);
-    setState(() => this.meetup = meetup);
-  }
-
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: meetup != null
-        ? ListView(
-          children: <Widget>[
-            HeaderSection(meetup),
-            TitleSection(meetup),
-            AdditionalInfoSection(meetup),
-            Padding(
-              padding: EdgeInsets.all(32.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-                  'Alps. Situated 1,578 meters above sea level, it is one of the '
-                  'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-                  'half-hour walk through pastures and pine forest, leads you to the '
-                  'lake, which warms to 20 degrees Celsius in the summer. Activities '
-                  'enjoyed here include rowing, and riding the summer toboggan run.'
+      body: StreamBuilder<Meetup>(
+        stream: BlocProvider.of<MeetupBloc>(context).meetup,
+        builder: (BuildContext context, AsyncSnapshot<Meetup> snapshot) {
+          if (snapshot.hasData) {
+            final meetup = snapshot.data;
+            return ListView(
+              children: <Widget>[
+                HeaderSection(meetup),
+                TitleSection(meetup),
+                AdditionalInfoSection(meetup),
+                Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
+                      'Alps. Situated 1,578 meters above sea level, it is one of the '
+                      'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
+                      'half-hour walk through pastures and pine forest, leads you to the '
+                      'lake, which warms to 20 degrees Celsius in the summer. Activities '
+                      'enjoyed here include rowing, and riding the summer toboggan run.'
+                    )
+                  )
                 )
-              )
-            )
-          ],
-        )
-        : Container(width: 0, height: 0),
+              ],
+            );
+          } else {
+            return Container(width: 0, height: 0);
+          }
+        },
+      ),
       appBar: AppBar(title: Text('Meetup Detail')),
       bottomNavigationBar: BottomNavigation(),
     );

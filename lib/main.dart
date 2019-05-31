@@ -36,7 +36,11 @@ class MeetuperApp extends StatelessWidget {
           final MeetupDetailArguments arguments = settings.arguments;
 
           return MaterialPageRoute(
-            builder: (context) => MeetupDetailScreen(meetupId: arguments.id)
+            builder: (context)
+              =>  BlocProvider<MeetupBloc>(
+                    bloc: MeetupBloc(),
+                    child: MeetupDetailScreen(meetupId: arguments.id)
+                  )
           );
         }
 
