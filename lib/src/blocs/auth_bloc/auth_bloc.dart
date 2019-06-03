@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/blocs/auth_bloc/events.dart';
 import 'package:flutter_meetuper/src/blocs/auth_bloc/states.dart';
+import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 
 export 'package:flutter_meetuper/src/blocs/auth_bloc/events.dart';
 export 'package:flutter_meetuper/src/blocs/auth_bloc/states.dart';
@@ -8,19 +12,27 @@ export 'package:flutter_meetuper/src/blocs/auth_bloc/states.dart';
 
 
 class AuthBloc extends BlocBase {
+  final AuthApiService auth;
 
+  final StreamController<AuthenticationState> _authController = StreamController<AuthenticationState>.broadcast();
+  Stream<AuthenticationState> get authState => _authController.stream;
+  StreamSink<AuthenticationState> get _inAuth => _authController.sink;
+
+  AuthBloc({@required this.auth}): assert(auth != null);
 
   void dispatch(AuthenticationEvent event) async {
     await for (var state in _authStream(event)) {
-      // provide state to other screen via controller
+      print('sending state $state');
+      _inAuth.add(state);
     }
   }
 
 
   Stream<AuthenticationState> _authStream(AuthenticationEvent event) async* {
     if (event is AppStarted) {
-      // Check if user is authenticated
-      final bool isAuth = false;
+      final bool isAuth = await auth.isAuthenticated();
+      print(event);
+      print('isAuth: $isAuth');
 
       if (isAuth) {
         yield AuthenticationAuthenticated();
@@ -43,6 +55,6 @@ class AuthBloc extends BlocBase {
   }
 
   dispose() {
-
+    _authController.close();
   }
 }

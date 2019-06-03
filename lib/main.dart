@@ -9,6 +9,7 @@ import 'package:flutter_meetuper/src/screens/login_screen.dart';
 import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
 import 'package:flutter_meetuper/src/screens/meetup_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/register_screen.dart';
+import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 
 void main() => runApp(App());
 
@@ -16,7 +17,7 @@ class App extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return BlocProvider<AuthBloc>(
-      bloc: AuthBloc(),
+      bloc: AuthBloc(auth: AuthApiService()),
       child: MeetuperApp(),
     );
   }
@@ -28,7 +29,17 @@ class MeetuperApp extends StatefulWidget {
 
 class _MeetuperAppState extends State<MeetuperApp> {
   final String appTitle = 'Meetuper App';
+  AuthBloc authBloc;
 
+  @override
+  void initState() {
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    authBloc.dispatch(AppStarted());
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     return MaterialApp(
