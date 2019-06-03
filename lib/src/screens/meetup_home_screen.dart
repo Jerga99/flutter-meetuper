@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_meetuper/src/blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/blocs/meetup_bloc.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
@@ -19,20 +20,19 @@ class MeetupHomeScreen extends StatefulWidget {
 
 class MeetupHomeScreenState extends State<MeetupHomeScreen> {
   List<Meetup> meetups = [];
+  AuthBloc authBloc;
 
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
     BlocProvider.of<MeetupBloc>(context).fetchMeetups();
-    // final meetupBloc = BlocProvider.of<MeetupBloc>(context);
-    // meetupBloc.fetchMeetups();
-    // meetupBloc.meetups.listen((data) => print(data));
+    authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          _MeetupTitle(),
+          _MeetupTitle(authBloc: authBloc),
           _MeetupList()
         ],
       ),
@@ -49,6 +49,9 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
 
 class _MeetupTitle extends StatelessWidget {
   final AuthApiService auth = AuthApiService();
+  final AuthBloc authBloc;
+
+  _MeetupTitle({@required this.authBloc});
 
   Widget _buildUserWelcome() {
     return FutureBuilder<bool>(
@@ -70,8 +73,7 @@ class _MeetupTitle extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     auth.logout()
-                      .then((isLogout) =>  null);
-                      //  Navigator.pushNamedAndRemoveUntil(context, '/login', (Route<dynamic> route) => false));
+                      .then((isLogout) => authBloc.dispatch(LoggedOut()));
                   },
                   child: Text(
                     'Logout',
