@@ -52,7 +52,6 @@ class UserBloc extends BlocBase {
   }
 
   bool _isUserMeetupOwner(Meetup meetup, User user) {
-    // Fix it in next lecture
     return user != null && meetup.meetupCreator.id == user.id;
   }
 
@@ -61,7 +60,6 @@ class UserBloc extends BlocBase {
            user.joinedMeetups.isNotEmpty &&
            user.joinedMeetups.contains(meetup.id);
   }
-
 
   dispose() {
     _userSubject.close();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/blocs/meetup_bloc.dart';
+import 'package:flutter_meetuper/src/blocs/user_bloc/user_bloc.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
 import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
@@ -14,52 +15,67 @@ class MeetupDetailScreen extends StatefulWidget {
   MeetupDetailScreen({this.meetupId});
 
   @override
-  MeetupDetailScreenState createState() => MeetupDetailScreenState();
+  _MeetupDetailScreenState createState() => _MeetupDetailScreenState();
 }
 
-class MeetupDetailScreenState extends State<MeetupDetailScreen> {
+class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
+  MeetupBloc _meetupBloc;
+  UserBloc _userBloc;
 
-  void didChangeDependencies(){
-    super.didChangeDependencies();
-    BlocProvider.of<MeetupBloc>(context).fetchMeetup(widget.meetupId);
+  void initState(){
+    _meetupBloc = BlocProvider.of<MeetupBloc>(context);
+    _userBloc = BlocProvider.of<UserBloc>(context);
+
+    _meetupBloc.fetchMeetup(widget.meetupId);
+    _meetupBloc.meetup.listen((meetup) {
+      _userBloc.dispatch(CheckUserPermissionsOnMeetup(meetup: meetup));
+    });
+
+    super.initState();
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder<Meetup>(
-        stream: BlocProvider.of<MeetupBloc>(context).meetup,
-        builder: (BuildContext context, AsyncSnapshot<Meetup> snapshot) {
-          if (snapshot.hasData) {
-            final meetup = snapshot.data;
-            return ListView(
-              children: <Widget>[
-                HeaderSection(meetup),
-                TitleSection(meetup),
-                AdditionalInfoSection(meetup),
-                Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-                      'Alps. Situated 1,578 meters above sea level, it is one of the '
-                      'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-                      'half-hour walk through pastures and pine forest, leads you to the '
-                      'lake, which warms to 20 degrees Celsius in the summer. Activities '
-                      'enjoyed here include rowing, and riding the summer toboggan run.'
+    return StreamBuilder<UserState>(
+      stream: _userBloc.userState,
+      initialData: UserInitialState(),
+      builder: (BuildContext context, AsyncSnapshot<UserState> snapshot) {
+        return Scaffold(
+          body: StreamBuilder<Meetup>(
+            stream: _meetupBloc.meetup,
+            builder: (BuildContext context, AsyncSnapshot<Meetup> snapshot) {
+              if (snapshot.hasData) {
+                final meetup = snapshot.data;
+                return ListView(
+                  children: <Widget>[
+                    HeaderSection(meetup),
+                    TitleSection(meetup),
+                    AdditionalInfoSection(meetup),
+                    Padding(
+                      padding: EdgeInsets.all(32.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
+                          'Alps. Situated 1,578 meters above sea level, it is one of the '
+                          'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
+                          'half-hour walk through pastures and pine forest, leads you to the '
+                          'lake, which warms to 20 degrees Celsius in the summer. Activities '
+                          'enjoyed here include rowing, and riding the summer toboggan run.'
+                        )
+                      )
                     )
-                  )
-                )
-              ],
-            );
-          } else {
-            return Container(width: 0, height: 0);
-          }
-        },
-      ),
-      appBar: AppBar(title: Text('Meetup Detail')),
-      bottomNavigationBar: BottomNavigation(),
-      floatingActionButton: _MeetupActionButton(),
+                  ],
+                );
+              } else {
+                return Container(width: 0, height: 0);
+              }
+            },
+          ),
+          appBar: AppBar(title: Text('Meetup Detail')),
+          bottomNavigationBar: BottomNavigation(),
+          floatingActionButton: _MeetupActionButton(),
+        );
+      }
     );
   }
 }
