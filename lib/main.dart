@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meetuper/src/blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/blocs/counter_bloc.dart';
 import 'package:flutter_meetuper/src/blocs/meetup_bloc.dart';
@@ -9,9 +10,23 @@ import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
 import 'package:flutter_meetuper/src/screens/meetup_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/register_screen.dart';
 
-void main() => runApp(MeetuperApp());
+void main() => runApp(App());
 
-class MeetuperApp extends StatelessWidget {
+class App extends StatelessWidget {
+
+  Widget build(BuildContext context) {
+    return BlocProvider<AuthBloc>(
+      bloc: AuthBloc(),
+      child: MeetuperApp(),
+    );
+  }
+}
+
+class MeetuperApp extends StatefulWidget {
+  _MeetuperAppState createState() => _MeetuperAppState();
+}
+
+class _MeetuperAppState extends State<MeetuperApp> {
   final String appTitle = 'Meetuper App';
 
   Widget build(BuildContext context) {
