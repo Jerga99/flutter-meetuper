@@ -47,7 +47,7 @@ class AuthBloc extends BlocBase {
     }
 
     if (event is LoggedOut) {
-      yield AuthenticationUnauthenticated();
+      yield AuthenticationUnauthenticated(logout: true);
     }
   }
 

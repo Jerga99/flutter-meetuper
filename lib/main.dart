@@ -62,7 +62,10 @@ class _MeetuperAppState extends State<MeetuperApp> {
           }
 
           if (state is AuthenticationUnauthenticated) {
-            return LoginScreen();
+            final LoginScreenArguments arguments = !state.logout
+              ? ModalRoute.of(context).settings.arguments
+              : null;
+            return LoginScreen(message: arguments?.message);
           }
 
           if (state is AuthenticationLoading) {
