@@ -11,3 +11,15 @@ class CheckUserPermissionsOnMeetup extends UserEvent {
   @override
   String toString() => 'CheckUserPermissionsOnMeetup';
 }
+
+class JoinMeetup extends UserEvent {
+
+  @override
+  String toString() => 'JoinMeetup';
+}
+
+class LeaveMeetup extends UserEvent {
+
+  @override
+  String toString() => 'JoinMeetup';
+}

@@ -34,6 +34,14 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
     super.initState();
   }
 
+  _joinMeetup() {
+    _userBloc.dispatch(JoinMeetup());
+  }
+
+  _leaveMeetup() {
+    _userBloc.dispatch(LeaveMeetup());
+  }
+
   Widget build(BuildContext context) {
     return StreamBuilder<UserState>(
       stream: _userBloc.userState,
@@ -74,7 +82,10 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
           ),
           appBar: AppBar(title: Text('Meetup Detail')),
           bottomNavigationBar: BottomNavigation(),
-          floatingActionButton: _MeetupActionButton(userState: userState),
+          floatingActionButton:
+             _MeetupActionButton(userState: userState,
+                                 joinMeetup: _joinMeetup,
+                                 leaveMeetup: _leaveMeetup),
         );
       }
     );
@@ -85,19 +96,24 @@ class _MeetupActionButton extends StatelessWidget {
   final AuthApiService auth = AuthApiService();
   final UserState userState;
 
-  _MeetupActionButton({@required this.userState});
+  final Function() joinMeetup;
+  final Function() leaveMeetup;
+
+  _MeetupActionButton({@required this.userState,
+                       @required this.joinMeetup,
+                       @required this.leaveMeetup});
 
   Widget build(BuildContext context) {
       if (userState is UserIsMember) {
         return FloatingActionButton(
-          onPressed: () {},
+          onPressed: leaveMeetup,
           child: Icon(Icons.cancel),
           backgroundColor: Colors.red,
           tooltip: 'Leave Meetup',
         );
       } else if (userState is UserIsNotMember) {
         return FloatingActionButton(
-          onPressed: () {},
+          onPressed: joinMeetup,
           child: Icon(Icons.person_add),
           backgroundColor: Colors.green,
           tooltip: 'Join Meetup',

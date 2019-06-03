@@ -49,6 +49,15 @@ class UserBloc extends BlocBase {
         yield UserIsNotAuth();
       }
     }
+
+    // Remove it after testing (:
+    if (event is JoinMeetup) {
+      yield UserIsMember();
+    }
+
+    if (event is LeaveMeetup) {
+      yield UserIsNotMember();
+    }
   }
 
   bool _isUserMeetupOwner(Meetup meetup, User user) {
