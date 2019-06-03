@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     widget.authApi
       .login(_loginData)
       .then((data) {
-        Navigator.pushNamed(context, MeetupHomeScreen.route);
+
       })
       .catchError((res) {
         Scaffold.of(_scaffoldContext).showSnackBar(SnackBar(

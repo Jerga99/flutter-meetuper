@@ -70,7 +70,8 @@ class _MeetupTitle extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     auth.logout()
-                      .then((isLogout) => Navigator.pushNamedAndRemoveUntil(context, '/login', (Route<dynamic> route) => false));
+                      .then((isLogout) =>  null);
+                      //  Navigator.pushNamedAndRemoveUntil(context, '/login', (Route<dynamic> route) => false));
                   },
                   child: Text(
                     'Logout',

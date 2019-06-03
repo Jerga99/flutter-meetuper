@@ -44,11 +44,32 @@ class _MeetuperAppState extends State<MeetuperApp> {
 
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.blue),
-      // home: BlocProvider<CounterBloc>(
-      //   bloc: CounterBloc(),
-      //   child: CounterHomeScreen(title: appTitle)
-      // ) ,
-      home: LoginScreen(),
+      home: StreamBuilder<AuthenticationState>(
+        stream: authBloc.authState,
+        initialData: AuthenticationUninitialized(),
+        builder: (BuildContext context, AsyncSnapshot<AuthenticationState> snapshot) {
+          final state = snapshot.data;
+
+          if (state is AuthenticationUninitialized) {
+            return SplashScreen();
+          }
+
+          if (state is AuthenticationAuthenticated) {
+            return BlocProvider<MeetupBloc>(
+              bloc: MeetupBloc(),
+              child: MeetupHomeScreen()
+            );
+          }
+
+          if (state is AuthenticationUnauthenticated) {
+            return LoginScreen();
+          }
+
+          if (state is AuthenticationLoading) {
+            return LoadingScreen();
+          }
+        },
+      ),
       routes: {
         MeetupHomeScreen.route: (context)
           => BlocProvider<MeetupBloc>(
@@ -81,6 +102,29 @@ class _MeetuperAppState extends State<MeetuperApp> {
     );
   }
 }
+
+class SplashScreen extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text('Splash Screen')
+      )
+    );
+  }
+}
+
+class LoadingScreen extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator()
+      )
+    );
+  }
+}
+
+
+
 
 
 
