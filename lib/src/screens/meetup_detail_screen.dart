@@ -21,6 +21,7 @@ class MeetupDetailScreen extends StatefulWidget {
 class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
   MeetupBloc _meetupBloc;
   UserBloc _userBloc;
+  Meetup _meetup;
 
   void initState(){
     _meetupBloc = BlocProvider.of<MeetupBloc>(context);
@@ -28,6 +29,7 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
 
     _meetupBloc.fetchMeetup(widget.meetupId);
     _meetupBloc.meetup.listen((meetup) {
+      _meetup = meetup;
       _userBloc.dispatch(CheckUserPermissionsOnMeetup(meetup: meetup));
     });
 
@@ -35,11 +37,11 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
   }
 
   _joinMeetup() {
-    _userBloc.dispatch(JoinMeetup());
+    _meetupBloc.joinMeetup(_meetup);
   }
 
   _leaveMeetup() {
-    _userBloc.dispatch(LeaveMeetup());
+    _meetupBloc.leaveMeetup(_meetup);
   }
 
   Widget build(BuildContext context) {
