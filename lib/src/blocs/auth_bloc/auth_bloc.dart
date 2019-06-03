@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/blocs/auth_bloc/events.dart';
@@ -14,7 +14,7 @@ export 'package:flutter_meetuper/src/blocs/auth_bloc/states.dart';
 class AuthBloc extends BlocBase {
   final AuthApiService auth;
 
-  final StreamController<AuthenticationState> _authController = StreamController<AuthenticationState>.broadcast();
+  final BehaviorSubject<AuthenticationState> _authController = BehaviorSubject<AuthenticationState>();
   Stream<AuthenticationState> get authState => _authController.stream;
   StreamSink<AuthenticationState> get _inAuth => _authController.sink;
 
@@ -22,7 +22,6 @@ class AuthBloc extends BlocBase {
 
   void dispatch(AuthenticationEvent event) async {
     await for (var state in _authStream(event)) {
-      print('sending state $state');
       _inAuth.add(state);
     }
   }
@@ -31,26 +30,24 @@ class AuthBloc extends BlocBase {
   Stream<AuthenticationState> _authStream(AuthenticationEvent event) async* {
     if (event is AppStarted) {
       final bool isAuth = await auth.isAuthenticated();
-      print(event);
-      print('isAuth: $isAuth');
 
       if (isAuth) {
         yield AuthenticationAuthenticated();
       } else {
         yield AuthenticationUnauthenticated();
       }
+    }
 
-      if (event is InitLogging) {
-        yield AuthenticationLoading();
-      }
+    if (event is InitLogging) {
+      yield AuthenticationLoading();
+    }
 
-      if (event is LoggedIn) {
-        yield AuthenticationAuthenticated();
-      }
+    if (event is LoggedIn) {
+      yield AuthenticationAuthenticated();
+    }
 
-      if (event is LoggedOut) {
-        yield AuthenticationUnauthenticated();
-      }
+    if (event is LoggedOut) {
+      yield AuthenticationUnauthenticated();
     }
   }
 
