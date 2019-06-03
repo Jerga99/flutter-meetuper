@@ -3,6 +3,7 @@ import 'package:flutter_meetuper/src/blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/blocs/counter_bloc.dart';
 import 'package:flutter_meetuper/src/blocs/meetup_bloc.dart';
+import 'package:flutter_meetuper/src/blocs/user_bloc/user_bloc.dart';
 import 'package:flutter_meetuper/src/models/arguments.dart';
 import 'package:flutter_meetuper/src/screens/counter_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/login_screen.dart';
@@ -89,7 +90,10 @@ class _MeetuperAppState extends State<MeetuperApp> {
             builder: (context)
               =>  BlocProvider<MeetupBloc>(
                     bloc: MeetupBloc(),
-                    child: MeetupDetailScreen(meetupId: arguments.id)
+                    child: BlocProvider<UserBloc>(
+                      bloc: UserBloc(auth: AuthApiService()),
+                      child: MeetupDetailScreen(meetupId: arguments.id)
+                    )
                   )
           );
         }
