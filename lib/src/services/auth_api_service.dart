@@ -35,6 +35,15 @@ class AuthApiService {
     }
   }
 
+  Future<Map<String, dynamic>> get _decodedToken async {
+    final token = await this.token;
+    if (token != null && token.isNotEmpty) {
+      return decode(token);
+    }
+
+    return null;
+  }
+
   Future<bool> _persistToken(token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString('token', token);
@@ -50,18 +59,14 @@ class AuthApiService {
     return false;
   }
 
-  // We need to rework this
+  void initUserFromToken() async {
+    authUser = await _decodedToken;
+  }
+
   Future<bool> isAuthenticated() async {
-    final token = await this.token;
-    if (token != null && token.isNotEmpty) {
-      final decodedToken = decode(token);
-      final isValidToken = decodedToken['exp'] * 1000 > DateTime.now().millisecond;
-
-      if (isValidToken) {
-        authUser = decodedToken;
-      }
-
-      return isValidToken;
+    final decodedToken = await _decodedToken;
+    if (decodedToken != null) {
+      return decodedToken['exp'] * 1000 > DateTime.now().millisecond;
     }
 
     return false;
