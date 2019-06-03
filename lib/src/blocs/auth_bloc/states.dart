@@ -1,5 +1,4 @@
 
-
 abstract class AuthenticationState {}
 
 class AuthenticationUninitialized extends AuthenticationState {
@@ -20,26 +19,4 @@ class AuthenticationUnauthenticated extends AuthenticationState {
 class AuthenticationLoading extends AuthenticationState {
   @override
   String toString() => 'AuthenticationLoading';
-}
-
-abstract class AuthenticationEvent {}
-
-class AppStarted extends AuthenticationEvent {
-  @override
-  String toString() => 'AppStarted';
-}
-
-class InitLogging extends AuthenticationEvent {
-  @override
-  String toString() => 'InitLogging';
-}
-
-class LoggedIn extends AuthenticationEvent {
-  @override
-  String toString() => 'LoggedIn';
-}
-
-class LoggedOut extends AuthenticationEvent {
-  @override
-  String toString() => 'LoggedOut';
 }
