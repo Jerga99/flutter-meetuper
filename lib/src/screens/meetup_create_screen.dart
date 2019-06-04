@@ -4,6 +4,7 @@ import 'package:flutter_meetuper/src/models/category.dart';
 import 'package:flutter_meetuper/src/models/forms.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 import 'package:flutter_meetuper/src/utils/generate_times.dart';
+import 'package:flutter_meetuper/src/widgets/select_input.dart';
 import 'package:intl/intl.dart';
 
 class MeetupCreateScreen extends StatefulWidget {
@@ -101,7 +102,12 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
             onSaved: (value) => _meetupFormData.title = value,
           ),
           _DatePicker(onDateChange: _handleDateChange),
-          _CategorySelect(categories: _categories, meetupFormData: _meetupFormData),
+          // _CategorySelect(categories: _categories, meetupFormData: _meetupFormData),
+          SelectInput<Category>(
+            items: _categories,
+            onChange: (Category c) => _meetupFormData.category = c,
+            label: 'Category'
+          ),
           TextFormField(
             style: Theme.of(context).textTheme.headline,
             inputFormatters: [LengthLimitingTextInputFormatter(30)],
