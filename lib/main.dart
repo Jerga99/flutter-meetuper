@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meetuper/src/blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
-import 'package:flutter_meetuper/src/blocs/counter_bloc.dart';
 import 'package:flutter_meetuper/src/blocs/meetup_bloc.dart';
 import 'package:flutter_meetuper/src/blocs/user_bloc/user_bloc.dart';
 import 'package:flutter_meetuper/src/models/arguments.dart';
-import 'package:flutter_meetuper/src/screens/counter_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/login_screen.dart';
+import 'package:flutter_meetuper/src/screens/meetup_create_screen.dart';
 import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
 import 'package:flutter_meetuper/src/screens/meetup_home_screen.dart';
 import 'package:flutter_meetuper/src/screens/register_screen.dart';
@@ -81,6 +80,7 @@ class _MeetuperAppState extends State<MeetuperApp> {
             child: MeetupHomeScreen(),
         ),
         RegisterScreen.route: (context) => RegisterScreen(),
+        MeetupCreateScreen.route: (context) => MeetupCreateScreen()
       },
       onGenerateRoute: (RouteSettings settings) {
         if (settings.name == MeetupDetailScreen.route) {
