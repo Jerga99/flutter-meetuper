@@ -117,22 +117,8 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
             ),
             onSaved: (value) => _meetupFormData.description = value,
           ),
-          TextFormField(
-            style: Theme.of(context).textTheme.headline,
-            inputFormatters: [LengthLimitingTextInputFormatter(30)],
-            decoration: InputDecoration(
-              hintText: 'Time From',
-            ),
-            onSaved: (value) => _meetupFormData.timeFrom = value,
-          ),
-          TextFormField(
-            style: Theme.of(context).textTheme.headline,
-            inputFormatters: [LengthLimitingTextInputFormatter(30)],
-            decoration: InputDecoration(
-              hintText: 'Time To',
-            ),
-            onSaved: (value) => _meetupFormData.timeTo = value,
-          ),
+          _TimeSelect(),
+          _TimeSelect(),
           _buildSubmitBtn()
         ],
       ),
@@ -258,3 +244,43 @@ class _DatePickerState extends State<_DatePicker> {
   }
 }
 
+
+class _TimeSelect extends StatefulWidget {
+  _TimeSelectState createState() => _TimeSelectState();
+}
+
+
+class _TimeSelectState extends State<_TimeSelect> {
+  final List<String> _times = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00'];
+  String _selectedTime;
+
+  Widget build(BuildContext context) {
+    return FormField<String>(
+      builder: (FormFieldState<String> state) {
+        return InputDecorator(
+          decoration: InputDecoration(
+            icon: const Icon(Icons.timer),
+            labelText: 'Time',
+          ),
+          isEmpty: _selectedTime == null,
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: _selectedTime,
+              isDense: true,
+              onChanged: (String newTime) {
+                _selectedTime = newTime;
+                state.didChange(newTime);
+              },
+              items: _times.map((String time) {
+                return DropdownMenuItem<String>(
+                  value: time,
+                  child: Text(time),
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
