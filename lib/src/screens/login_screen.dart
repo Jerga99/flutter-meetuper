@@ -61,10 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _authBloc.dispatch(LoggedIn());
       })
       .catchError((res) {
-        _authBloc.dispatch(LoggedOut());
-        Scaffold.of(_scaffoldContext).showSnackBar(SnackBar(
-          content: Text(res['errors']['message'])
-        ));
+        _authBloc.dispatch(LoggedOut(message: res['errors']['message']));
       });
   }
 

@@ -73,7 +73,7 @@ class _MeetupTitle extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     auth.logout()
-                      .then((isLogout) => authBloc.dispatch(LoggedOut()));
+                      .then((isLogout) => authBloc.dispatch(LoggedOut(message: 'You have been succefuly logged out!')));
                   },
                   child: Text(
                     'Logout',

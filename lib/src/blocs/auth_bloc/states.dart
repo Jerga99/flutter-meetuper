@@ -12,9 +12,9 @@ class AuthenticationAuthenticated extends AuthenticationState {
 }
 
 class AuthenticationUnauthenticated extends AuthenticationState {
-  bool logout;
+  String message;
 
-  AuthenticationUnauthenticated({this.logout = false});
+  AuthenticationUnauthenticated({this.message});
 
   @override
   String toString() => 'AuthenticationUnauthenticated';
