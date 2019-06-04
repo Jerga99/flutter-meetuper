@@ -30,6 +30,14 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
     _meetupFormData.startDate = selectedDate;
   }
 
+  _handleTimeFromChange(String time) {
+    _meetupFormData.timeFrom = time;
+  }
+
+  _handleTimeToChange(String time) {
+    _meetupFormData.timeTo = time;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,8 +125,8 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
             ),
             onSaved: (value) => _meetupFormData.description = value,
           ),
-          _TimeSelect(),
-          _TimeSelect(),
+          _TimeSelect(onTimeChange: _handleTimeFromChange, label: 'Time From'),
+          _TimeSelect(onTimeChange: _handleTimeToChange, label: 'Time To'),
           _buildSubmitBtn()
         ],
       ),
@@ -246,9 +254,13 @@ class _DatePickerState extends State<_DatePicker> {
 
 
 class _TimeSelect extends StatefulWidget {
-  _TimeSelectState createState() => _TimeSelectState();
-}
+  final Function(String) onTimeChange;
+  final label;
 
+  _TimeSelectState createState() => _TimeSelectState();
+
+  _TimeSelect({@required this.onTimeChange, this.label});
+}
 
 class _TimeSelectState extends State<_TimeSelect> {
   final List<String> _times = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00'];
@@ -260,7 +272,7 @@ class _TimeSelectState extends State<_TimeSelect> {
         return InputDecorator(
           decoration: InputDecoration(
             icon: const Icon(Icons.timer),
-            labelText: 'Time',
+            labelText: widget.label ?? 'Time',
           ),
           isEmpty: _selectedTime == null,
           child: DropdownButtonHideUnderline(
@@ -268,6 +280,7 @@ class _TimeSelectState extends State<_TimeSelect> {
               value: _selectedTime,
               isDense: true,
               onChanged: (String newTime) {
+                widget.onTimeChange(newTime);
                 _selectedTime = newTime;
                 state.didChange(newTime);
               },
