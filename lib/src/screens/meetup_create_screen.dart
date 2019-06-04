@@ -33,14 +33,6 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
     _meetupFormData.startDate = selectedDate;
   }
 
-  _handleTimeFromChange(String time) {
-    _meetupFormData.timeFrom = time;
-  }
-
-  _handleTimeToChange(String time) {
-    _meetupFormData.timeTo = time;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +67,7 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
-      print(_meetupFormData.toJSON());
-      print(_meetupFormData.startDate);
+      _api.createMeetup(_meetupFormData);
     }
   }
 
@@ -130,6 +121,8 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
             decoration: InputDecoration(
               hintText: 'Description',
             ),
+            maxLines: null,
+            keyboardType: TextInputType.multiline,
             onSaved: (value) => _meetupFormData.description = value,
           ),
           SelectInput<String>(
@@ -194,13 +187,14 @@ class _DatePickerState extends State<_DatePicker> {
         initialDate: _initialDate,
         firstDate: _dateNow,
         lastDate: DateTime(_dateNow.year + 1, _dateNow.month, _dateNow.day));
-    if (picked != null && picked != _initialDate)
-      widget.onDateChange(picked);
-      setState(() {
-        _dateController.text = _dateFormat.format(picked);
-        _initialDate = picked;
-      }
-    );
+    if (picked != null && picked != _initialDate) {
+        widget.onDateChange(picked);
+        setState(() {
+          _dateController.text = _dateFormat.format(picked);
+          _initialDate = picked;
+        }
+      );
+    }
   }
 
   Widget build(BuildContext context) {

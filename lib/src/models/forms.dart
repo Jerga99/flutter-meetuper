@@ -33,7 +33,7 @@ class RegisterFormData {
 class MeetupFormData {
   String location = '';
   String title = '';
-  DateTime startDate = DateTime.now();
+  DateTime startDate;
   Category category;
   String image = '';
   String shortInfo = '';
@@ -45,8 +45,8 @@ class MeetupFormData {
     {
       'location': location,
       'title': title,
-      'startDate': startDate,
-      'category': category,
+      'startDate': startDate.toIso8601String(),
+      'category': category.toJSON(),
       'image': image,
       'shortInfo': shortInfo,
       'description': description,
