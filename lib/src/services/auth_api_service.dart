@@ -89,6 +89,22 @@ class AuthApiService {
     }
   }
 
+  Future<User> fetchAuthUser() async {
+    try {
+      final token = await this.token;
+      final res = await http.get('$url/users/me', headers: {'Authorization': 'Bearer $token'});
+
+      final decodedBody = Map<String, dynamic>.from(json.decode(res.body));
+      await _saveToken(decodedBody['token']);
+      authUser = decodedBody;
+      return authUser;
+    } catch(e) {
+      await _removeAuthData();
+      throw Exception('Cannot fetch user');
+    }
+  }
+
+
   Future<Map<String, dynamic>> login(LoginFormData loginData) async {
     final body = json.encode(loginData.toJSON());
     print(body);

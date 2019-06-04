@@ -32,7 +32,9 @@ class AuthBloc extends BlocBase {
       final bool isAuth = await auth.isAuthenticated();
 
       if (isAuth) {
-        auth.initUserFromToken();
+        await auth.fetchAuthUser().catchError((error) {
+          dispatch(LoggedOut());
+        });
         yield AuthenticationAuthenticated();
       } else {
         yield AuthenticationUnauthenticated();
