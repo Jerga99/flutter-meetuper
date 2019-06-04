@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_meetuper/src/models/category.dart';
 import 'package:flutter_meetuper/src/models/forms.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
+import 'package:flutter_meetuper/src/utils/generate_times.dart';
 import 'package:intl/intl.dart';
 
 class MeetupCreateScreen extends StatefulWidget {
@@ -255,6 +256,7 @@ class _DatePickerState extends State<_DatePicker> {
 
 class _TimeSelect extends StatefulWidget {
   final Function(String) onTimeChange;
+  final List<String> times = generateTimes();
   final label;
 
   _TimeSelectState createState() => _TimeSelectState();
@@ -263,7 +265,6 @@ class _TimeSelect extends StatefulWidget {
 }
 
 class _TimeSelectState extends State<_TimeSelect> {
-  final List<String> _times = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00'];
   String _selectedTime;
 
   Widget build(BuildContext context) {
@@ -284,7 +285,7 @@ class _TimeSelectState extends State<_TimeSelect> {
                 _selectedTime = newTime;
                 state.didChange(newTime);
               },
-              items: _times.map((String time) {
+              items: widget.times.map((String time) {
                 return DropdownMenuItem<String>(
                   value: time,
                   child: Text(time),
