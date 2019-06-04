@@ -17,7 +17,7 @@ class SelectInput<T> extends StatefulWidget {
   _SelectInputState createState() => _SelectInputState<T>();
 }
 
-class _SelectInputState<T> extends State<SelectInput> {
+class _SelectInputState<T> extends State<SelectInput<T>> {
   T value;
 
   Widget build(BuildContext context) {
@@ -35,13 +35,12 @@ class _SelectInputState<T> extends State<SelectInput> {
               isDense: true,
               onChanged: (T newValue) {
                 widget.onChange(newValue);
-                value = newValue;
-                state.didChange(newValue);
+                setState(() => value = newValue);
               },
-              items: (widget.items as List<T>).map((T item) {
+              items: widget.items.map((T item) {
                 return DropdownMenuItem<T>(
                   value: item,
-                  child: Text('Some Data'),
+                  child: Text(item.toString()),
                 );
               }).toList(),
             ),

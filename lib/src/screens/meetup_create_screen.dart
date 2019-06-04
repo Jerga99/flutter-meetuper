@@ -19,6 +19,7 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
   MeetupFormData _meetupFormData = MeetupFormData();
   MeetupApiService _api = MeetupApiService();
   List<Category> _categories = [];
+  final List<String> _times = generateTimes();
 
   @override
   initState() {
@@ -102,7 +103,6 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
             onSaved: (value) => _meetupFormData.title = value,
           ),
           _DatePicker(onDateChange: _handleDateChange),
-          // _CategorySelect(categories: _categories, meetupFormData: _meetupFormData),
           SelectInput<Category>(
             items: _categories,
             onChange: (Category c) => _meetupFormData.category = c,
@@ -132,8 +132,16 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
             ),
             onSaved: (value) => _meetupFormData.description = value,
           ),
-          _TimeSelect(onTimeChange: _handleTimeFromChange, label: 'Time From'),
-          _TimeSelect(onTimeChange: _handleTimeToChange, label: 'Time To'),
+          SelectInput<String>(
+            items: _times,
+            onChange: (String t) => _meetupFormData.timeFrom = t,
+            label: 'Time From'
+          ),
+          SelectInput<String>(
+            items: _times,
+            onChange: (String t) => _meetupFormData.timeTo = t,
+            label: 'Time To'
+          ),
           _buildSubmitBtn()
         ],
       ),
@@ -165,46 +173,6 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
     );
   }
 }
-
-
-class _CategorySelect extends StatelessWidget {
-  final List<Category> categories;
-  final MeetupFormData meetupFormData;
-
-  _CategorySelect({@required this.categories,
-                   @required this.meetupFormData});
-
-  Widget build(BuildContext context) {
-    return FormField<Category>(
-      builder: (FormFieldState<Category> state) {
-        return InputDecorator(
-          decoration: InputDecoration(
-            icon: const Icon(Icons.color_lens),
-            labelText: 'Category',
-          ),
-          isEmpty: meetupFormData.category == null,
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<Category>(
-              value: meetupFormData.category,
-              isDense: true,
-              onChanged: (Category newCategory) {
-                meetupFormData.category = newCategory;
-                state.didChange(newCategory);
-              },
-              items: categories.map((Category category) {
-                return DropdownMenuItem<Category>(
-                  value: category,
-                  child: Text(category.name),
-                );
-              }).toList(),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
 
 class _DatePicker extends StatefulWidget {
   final Function(DateTime date) onDateChange;
@@ -259,48 +227,3 @@ class _DatePickerState extends State<_DatePicker> {
   }
 }
 
-
-class _TimeSelect extends StatefulWidget {
-  final Function(String) onTimeChange;
-  final List<String> times = generateTimes();
-  final label;
-
-  _TimeSelectState createState() => _TimeSelectState();
-
-  _TimeSelect({@required this.onTimeChange, this.label});
-}
-
-class _TimeSelectState extends State<_TimeSelect> {
-  String _selectedTime;
-
-  Widget build(BuildContext context) {
-    return FormField<String>(
-      builder: (FormFieldState<String> state) {
-        return InputDecorator(
-          decoration: InputDecoration(
-            icon: const Icon(Icons.timer),
-            labelText: widget.label ?? 'Time',
-          ),
-          isEmpty: _selectedTime == null,
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: _selectedTime,
-              isDense: true,
-              onChanged: (String newTime) {
-                widget.onTimeChange(newTime);
-                _selectedTime = newTime;
-                state.didChange(newTime);
-              },
-              items: widget.times.map((String time) {
-                return DropdownMenuItem<String>(
-                  value: time,
-                  child: Text(time),
-                );
-              }).toList(),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
