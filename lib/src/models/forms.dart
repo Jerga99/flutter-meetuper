@@ -33,8 +33,8 @@ class RegisterFormData {
 class MeetupFormData {
   String location = '';
   String title = '';
-  String startDate = '';
-  Category category = null;
+  DateTime startDate = DateTime.now();
+  Category category;
   String image = '';
   String shortInfo = '';
   String description = '';
