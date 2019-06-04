@@ -37,7 +37,7 @@ class MeetupApiService {
     return decodedBody.map((val) => Category.fromJSON(val)).toList();
   }
 
-  Future createMeetup(MeetupFormData formData) async {
+  Future<String> createMeetup(MeetupFormData formData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     final body = json.encode(formData.toJSON());

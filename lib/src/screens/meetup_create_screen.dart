@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_meetuper/src/models/category.dart';
 import 'package:flutter_meetuper/src/models/forms.dart';
+import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
+import 'package:flutter_meetuper/src/screens/meetup_home_screen.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 import 'package:flutter_meetuper/src/utils/generate_times.dart';
 import 'package:flutter_meetuper/src/widgets/select_input.dart';
@@ -33,6 +35,23 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
     _meetupFormData.startDate = selectedDate;
   }
 
+  void _submitCreate() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      _api.createMeetup(_meetupFormData)
+        .then((String meetupId) {
+          Navigator
+            .pushNamedAndRemoveUntil(
+              context,
+              MeetupDetailScreen.route,
+              (Route<dynamic> route) => false,
+              arguments: MeetupDetailArguments(id: meetupId));
+        })
+        .catchError((e) => print(e));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,26 +68,6 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
         }
       )
     );
-  }
-
-  void handleSuccesfulCreate(dynamic data) async {
-    // await Navigator
-    //   .pushNamed(context, "/login",
-    //              arguments: LoginScreenArguments('You have been succesfuly logged in!'));
-  }
-
-  void handleError(String message) {
-    Scaffold.of(_scaffoldContext).showSnackBar(SnackBar(
-      content: Text(message)
-    ));
-  }
-
-  void _submitCreate() {
-    final form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      _api.createMeetup(_meetupFormData);
-    }
   }
 
   Widget _buildForm() {
@@ -101,7 +100,6 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
           ),
           TextFormField(
             style: Theme.of(context).textTheme.headline,
-            inputFormatters: [LengthLimitingTextInputFormatter(30)],
             decoration: InputDecoration(
               hintText: 'Image',
             ),
