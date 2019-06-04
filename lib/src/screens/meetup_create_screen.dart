@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_meetuper/src/models/category.dart';
 import 'package:flutter_meetuper/src/models/forms.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
+import 'package:intl/intl.dart';
 
 class MeetupCreateScreen extends StatefulWidget {
   static final String route = '/meetupCreate';
@@ -207,6 +208,8 @@ class _DatePicker extends StatefulWidget {
 class _DatePickerState extends State<_DatePicker> {
   DateTime _dateNow = DateTime.now();
   DateTime _initialDate = DateTime.now();
+  final TextEditingController _dateController = TextEditingController();
+  final _dateFormat = DateFormat('dd/MM/yyyy');
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -216,6 +219,7 @@ class _DatePickerState extends State<_DatePicker> {
         lastDate: DateTime(_dateNow.year + 1, _dateNow.month, _dateNow.day));
     if (picked != null && picked != _initialDate)
       setState(() {
+        _dateController.text = _dateFormat.format(picked);
         _initialDate = picked;
       }
     );
@@ -231,6 +235,7 @@ class _DatePickerState extends State<_DatePicker> {
           hintText: 'Enter date when meetup starts',
           labelText: 'Dob',
         ),
+        controller: _dateController,
         keyboardType: TextInputType.datetime,
       )),
       IconButton(
