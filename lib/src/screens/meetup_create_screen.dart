@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_meetuper/src/models/category.dart';
 import 'package:flutter_meetuper/src/models/forms.dart';
+import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 
 class MeetupCreateScreen extends StatefulWidget {
   static final String route = '/meetupCreate';
@@ -11,8 +13,17 @@ class MeetupCreateScreen extends StatefulWidget {
 class MeetupCreateScreenState extends State<MeetupCreateScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   BuildContext _scaffoldContext;
-
   MeetupFormData _meetupFormData = MeetupFormData();
+  MeetupApiService _api = MeetupApiService();
+  List<Category> _categories = [];
+
+  @override
+  initState() {
+    _api.fetchCategories()
+      .then((categories) => setState(() => _categories = categories));
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

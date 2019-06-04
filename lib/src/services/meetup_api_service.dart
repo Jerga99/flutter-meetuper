@@ -1,4 +1,5 @@
 
+import 'package:flutter_meetuper/src/models/category.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -27,6 +28,12 @@ class MeetupApiService {
     final res = await http.get('$url/meetups/$id');
     final parsedMeetup = json.decode(res.body);
     return Meetup.fromJSON(parsedMeetup);
+  }
+
+  Future<List<Category>> fetchCategories() async {
+    final res = await http.get('$url/categories');
+    final List decodedBody = json.decode(res.body);
+    return decodedBody.map((val) => Category.fromJSON(val)).toList();
   }
 
   Future<bool> joinMeetup(String meetupId) async {
