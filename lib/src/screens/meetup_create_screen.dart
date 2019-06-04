@@ -45,7 +45,7 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
             .pushNamedAndRemoveUntil(
               context,
               MeetupDetailScreen.route,
-              (Route<dynamic> route) => false,
+              ModalRoute.withName('/'),
               arguments: MeetupDetailArguments(id: meetupId));
         })
         .catchError((e) => print(e));
