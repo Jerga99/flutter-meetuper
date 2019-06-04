@@ -26,6 +26,10 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
     super.initState();
   }
 
+  _handleDateChange(DateTime selectedDate) {
+    _meetupFormData.startDate = selectedDate;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +91,7 @@ class MeetupCreateScreenState extends State<MeetupCreateScreen> {
             ),
             onSaved: (value) => _meetupFormData.title = value,
           ),
-          _DatePicker(),
+          _DatePicker(onDateChange: _handleDateChange),
           _CategorySelect(categories: _categories, meetupFormData: _meetupFormData),
           TextFormField(
             style: Theme.of(context).textTheme.headline,
@@ -202,6 +206,10 @@ class _CategorySelect extends StatelessWidget {
 
 
 class _DatePicker extends StatefulWidget {
+  final Function(DateTime date) onDateChange;
+
+  _DatePicker({@required this.onDateChange});
+
   _DatePickerState createState() => _DatePickerState();
 }
 
@@ -218,6 +226,7 @@ class _DatePickerState extends State<_DatePicker> {
         firstDate: _dateNow,
         lastDate: DateTime(_dateNow.year + 1, _dateNow.month, _dateNow.day));
     if (picked != null && picked != _initialDate)
+      widget.onDateChange(picked);
       setState(() {
         _dateController.text = _dateFormat.format(picked);
         _initialDate = picked;
