@@ -8,6 +8,7 @@ import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 import 'package:flutter_meetuper/src/widgets/bottom_navigation.dart';
 import 'package:flutter_meetuper/src/widgets/joined_people_list.dart';
 import 'package:flutter_meetuper/src/widgets/thread_list.dart';
+import 'package:intl/intl.dart';
 
 
 enum Views {
@@ -248,6 +249,7 @@ class TitleSection extends StatelessWidget {
 
 class HeaderSection extends StatelessWidget {
   final Meetup meetup;
+  final dateFormat = DateFormat('dd/MM/yyyy');
 
   HeaderSection(this.meetup);
 
@@ -267,10 +269,10 @@ class HeaderSection extends StatelessWidget {
             child: ListTile(
               leading: CircleAvatar(
                 radius: 30.0,
-                backgroundImage: NetworkImage('https://cdn1.vectorstock.com/i/thumb-large/82/55/anonymous-user-circle-icon-vector-18958255.jpg'),
+                backgroundImage: NetworkImage(meetup.meetupCreator?.avatar),
               ),
               title: Text(
-                meetup.title,
+                meetup.meetupCreator.name,
                 style: TextStyle(
                   fontSize:  20.0,
                   fontWeight: FontWeight.bold,
@@ -278,7 +280,7 @@ class HeaderSection extends StatelessWidget {
                 )
               ),
               subtitle: Text(
-                meetup.shortInfo,
+                dateFormat.format(DateTime.tryParse(meetup.createdAt)),
                 style: TextStyle(
                   fontSize: 17.0,
                   fontWeight: FontWeight.bold,
