@@ -110,7 +110,8 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
           appBar: AppBar(title: Text('Meetup Detail')),
           bottomNavigationBar:
             BottomNavigation(userState: userState,
-                             onChange: (int i) => setState(() => screenIndex = i)),
+                             onChange: (int i) => setState(() => screenIndex = i),
+                             currentIndex: screenIndex),
           floatingActionButton:
              _MeetupActionButton(userState: userState,
                                  joinMeetup: _joinMeetup,
