@@ -191,6 +191,7 @@ class _MeetupList extends StatelessWidget {
 
 class _ModalBottomSheet extends StatelessWidget {
   final AuthBloc authBloc;
+  final AuthApiService auth = AuthApiService();
 
   _ModalBottomSheet({@required this.authBloc}): assert(authBloc != null);
 
@@ -224,7 +225,12 @@ class _ModalBottomSheet extends StatelessWidget {
                   leading: Icon(Icons.account_circle),
                   title: Text('Logout'),
                   onTap: () =>
-                   authBloc.dispatch(LoggedOut(message: 'You have been succefuly logged out!'))
+                   auth.logout()
+                      .then((isLogout) {
+                        Navigator.pop(context);
+                        authBloc.dispatch(LoggedOut(message: 'You have been succefuly logged out!'));
+                    }
+                  )
                 ),
               ],
             ),
