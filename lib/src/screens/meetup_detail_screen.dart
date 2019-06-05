@@ -22,6 +22,7 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
   MeetupBloc _meetupBloc;
   UserBloc _userBloc;
   Meetup _meetup;
+  int screenIndex = 0;
 
   void initState(){
     _meetupBloc = BlocProvider.of<MeetupBloc>(context);
@@ -51,39 +52,52 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
       builder: (BuildContext context, AsyncSnapshot<UserState> snapshot) {
         final userState = snapshot.data;
         return Scaffold(
-          body: StreamBuilder<Meetup>(
-            stream: _meetupBloc.meetup,
-            builder: (BuildContext context, AsyncSnapshot<Meetup> snapshot) {
-              if (snapshot.hasData) {
-                final meetup = snapshot.data;
-                return ListView(
-                  children: <Widget>[
-                    HeaderSection(meetup),
-                    TitleSection(meetup),
-                    AdditionalInfoSection(meetup),
-                    Padding(
-                      padding: EdgeInsets.all(32.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-                          'Alps. Situated 1,578 meters above sea level, it is one of the '
-                          'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-                          'half-hour walk through pastures and pine forest, leads you to the '
-                          'lake, which warms to 20 degrees Celsius in the summer. Activities '
-                          'enjoyed here include rowing, and riding the summer toboggan run.'
-                        )
-                      )
-                    )
-                  ],
+          body: Builder(
+            builder: (BuildContext context) {
+              if (screenIndex == 0) {
+                return StreamBuilder<Meetup>(
+                  stream: _meetupBloc.meetup,
+                  builder: (BuildContext context, AsyncSnapshot<Meetup> snapshot) {
+                    if (snapshot.hasData) {
+                      final meetup = snapshot.data;
+                      return ListView(
+                        children: <Widget>[
+                          HeaderSection(meetup),
+                          TitleSection(meetup),
+                          AdditionalInfoSection(meetup),
+                          Padding(
+                            padding: EdgeInsets.all(32.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
+                                'Alps. Situated 1,578 meters above sea level, it is one of the '
+                                'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
+                                'half-hour walk through pastures and pine forest, leads you to the '
+                                'lake, which warms to 20 degrees Celsius in the summer. Activities '
+                                'enjoyed here include rowing, and riding the summer toboggan run.'
+                              )
+                            )
+                          )
+                        ],
+                      );
+                    } else {
+                      return Container(width: 0, height: 0);
+                    }
+                  },
                 );
-              } else {
-                return Container(width: 0, height: 0);
               }
-            },
+              if (screenIndex == 1) {
+                return Center(child: Text('I am Threads View!'));
+              }
+
+              if (screenIndex == 2 ) {
+                return Center(child: Text('I am People View!'));
+              }
+            }
           ),
           appBar: AppBar(title: Text('Meetup Detail')),
-          bottomNavigationBar: BottomNavigation(),
+          bottomNavigationBar: BottomNavigation(onChange: (i) => setState(() => screenIndex = i)),
           floatingActionButton:
              _MeetupActionButton(userState: userState,
                                  joinMeetup: _joinMeetup,

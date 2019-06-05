@@ -5,6 +5,7 @@ import 'package:flutter_meetuper/src/models/meetup.dart';
 import 'package:flutter_meetuper/src/models/user.dart';
 import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
+import 'package:rxdart/rxdart.dart';
 
 class MeetupBloc implements BlocBase {
   // Better idea would be to inject services in constructor
@@ -15,7 +16,7 @@ class MeetupBloc implements BlocBase {
   Stream<List<Meetup>> get meetups => _meetupController.stream;
   StreamSink<List<Meetup>> get _inMeetups => _meetupController.sink;
 
-  final StreamController<Meetup> _meetupDetailController = StreamController.broadcast();
+  final BehaviorSubject<Meetup> _meetupDetailController = BehaviorSubject();
   Stream<Meetup> get meetup => _meetupDetailController.stream;
   StreamSink<Meetup> get _inMeetup => _meetupDetailController.sink;
 
