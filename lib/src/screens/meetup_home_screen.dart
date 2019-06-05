@@ -29,6 +29,41 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
     super.initState();
   }
 
+  _showBottomMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 250.0,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: new Icon(Icons.person),
+                title: new Text('Login'),
+                onTap: () => {},
+              ),
+              ListTile(
+                leading: new Icon(Icons.person),
+                title: new Text('Register'),
+                onTap: () => {},
+              ),
+              ListTile(
+                leading: new Icon(Icons.photo_album),
+                title: new Text('Create Meetup'),
+                onTap: () => {},
+              ),
+              ListTile(
+                leading: new Icon(Icons.account_circle),
+                title: new Text('Logout'),
+                onTap: () => {},
+              ),
+            ],
+          ),
+        );
+      }
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -38,7 +73,13 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
         ],
       ),
       appBar: AppBar(
-        title: Text('Home')
+        title: Text('Home'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => _showBottomMenu(context),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
