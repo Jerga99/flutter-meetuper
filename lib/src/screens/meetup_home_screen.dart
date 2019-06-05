@@ -4,8 +4,10 @@ import 'package:flutter_meetuper/src/blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/blocs/meetup_bloc.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
+import 'package:flutter_meetuper/src/screens/login_screen.dart';
 import 'package:flutter_meetuper/src/screens/meetup_detail_screen.dart';
 import 'package:flutter_meetuper/src/screens/meetup_create_screen.dart';
+import 'package:flutter_meetuper/src/screens/register_screen.dart';
 import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 
 class MeetupDetailArguments {
@@ -32,59 +34,7 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
   _showBottomMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) {
-        return StreamBuilder<AuthenticationState>(
-          stream: authBloc.authState,
-          initialData: AuthenticationUninitialized(),
-          builder: (BuildContext context, AsyncSnapshot<AuthenticationState> snapshot) {
-            final state = snapshot.data;
-
-            if (state is AuthenticationUninitialized) {
-              return Container(width: 0, height: 0);
-            }
-
-            if (state is AuthenticationAuthenticated) {
-              return Container(
-                height: 150.0,
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: new Icon(Icons.photo_album),
-                      title: new Text('Create Meetup'),
-                      onTap: () => {},
-                    ),
-                    ListTile(
-                      leading: new Icon(Icons.account_circle),
-                      title: new Text('Logout'),
-                      onTap: () => {},
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            if (state is AuthenticationUnauthenticated) {
-              return Container(
-                height: 150.0,
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: new Icon(Icons.person),
-                      title: new Text('Login'),
-                      onTap: () => {},
-                    ),
-                    ListTile(
-                      leading: new Icon(Icons.person),
-                      title: new Text('Register'),
-                      onTap: () => {},
-                    )
-                  ],
-                ),
-              );
-            }
-          }
-        );
-      }
+      builder: (BuildContext context) => _ModalBottomSheet(authBloc: authBloc)
     );
   }
 
@@ -239,6 +189,81 @@ class _MeetupList extends StatelessWidget {
 }
 
 
+class _ModalBottomSheet extends StatelessWidget {
+  final AuthBloc authBloc;
+
+  _ModalBottomSheet({@required this.authBloc}): assert(authBloc != null);
+
+  Widget build(BuildContext context) {
+    return StreamBuilder<AuthenticationState>(
+      stream: authBloc.authState,
+      initialData: AuthenticationUninitialized(),
+      builder: (BuildContext context, AsyncSnapshot<AuthenticationState> snapshot) {
+        final state = snapshot.data;
+
+        if (state is AuthenticationUninitialized) {
+          return Container(width: 0, height: 0);
+        }
+
+        if (state is AuthenticationAuthenticated) {
+          return Container(
+            height: 150.0,
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.photo_album),
+                  title: Text('Create Meetup'),
+                  onTap: () => {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      MeetupCreateScreen.route,
+                      ModalRoute.withName('/'))
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.account_circle),
+                  title: Text('Logout'),
+                  onTap: () =>
+                   authBloc.dispatch(LoggedOut(message: 'You have been succefuly logged out!'))
+                ),
+              ],
+            ),
+          );
+        }
+
+        if (state is AuthenticationUnauthenticated) {
+          return Container(
+            height: 150.0,
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: new Icon(Icons.person),
+                  title: new Text('Login'),
+                  onTap: () => {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      LoginScreen.route,
+                      ModalRoute.withName(MeetupHomeScreen.route))
+                  },
+                ),
+                ListTile(
+                  leading: new Icon(Icons.person),
+                  title: new Text('Register'),
+                  onTap: () => {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      RegisterScreen.route,
+                      ModalRoute.withName(MeetupHomeScreen.route))
+                  },
+                )
+              ],
+            ),
+          );
+        }
+      }
+    );
+  }
+}
 
 
 
