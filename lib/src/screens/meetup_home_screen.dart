@@ -33,32 +33,56 @@ class MeetupHomeScreenState extends State<MeetupHomeScreen> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          height: 250.0,
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                leading: new Icon(Icons.person),
-                title: new Text('Login'),
-                onTap: () => {},
-              ),
-              ListTile(
-                leading: new Icon(Icons.person),
-                title: new Text('Register'),
-                onTap: () => {},
-              ),
-              ListTile(
-                leading: new Icon(Icons.photo_album),
-                title: new Text('Create Meetup'),
-                onTap: () => {},
-              ),
-              ListTile(
-                leading: new Icon(Icons.account_circle),
-                title: new Text('Logout'),
-                onTap: () => {},
-              ),
-            ],
-          ),
+        return StreamBuilder<AuthenticationState>(
+          stream: authBloc.authState,
+          initialData: AuthenticationUninitialized(),
+          builder: (BuildContext context, AsyncSnapshot<AuthenticationState> snapshot) {
+            final state = snapshot.data;
+
+            if (state is AuthenticationUninitialized) {
+              return Container(width: 0, height: 0);
+            }
+
+            if (state is AuthenticationAuthenticated) {
+              return Container(
+                height: 150.0,
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: new Icon(Icons.photo_album),
+                      title: new Text('Create Meetup'),
+                      onTap: () => {},
+                    ),
+                    ListTile(
+                      leading: new Icon(Icons.account_circle),
+                      title: new Text('Logout'),
+                      onTap: () => {},
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            if (state is AuthenticationUnauthenticated) {
+              return Container(
+                height: 150.0,
+                child: Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: new Icon(Icons.person),
+                      title: new Text('Login'),
+                      onTap: () => {},
+                    ),
+                    ListTile(
+                      leading: new Icon(Icons.person),
+                      title: new Text('Register'),
+                      onTap: () => {},
+                    )
+                  ],
+                ),
+              );
+            }
+          }
         );
       }
     );
