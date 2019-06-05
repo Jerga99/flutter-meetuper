@@ -53,8 +53,8 @@ class MeetupBloc implements BlocBase {
       .catchError((err) => print(err));
   }
 
-  void leaveMeetup(Meetup meetup) {
-    _api.leaveMeetup(meetup.id)
+  Future<bool> leaveMeetup(Meetup meetup) {
+    return _api.leaveMeetup(meetup.id)
       .then((_) {
         User user = _auth.authUser;
         user.joinedMeetups.removeWhere((jMeetup) => jMeetup == meetup.id);
@@ -62,8 +62,12 @@ class MeetupBloc implements BlocBase {
         meetup.joinedPeople.removeWhere((jUser) => jUser.id == user.id);
         meetup.joinedPeopleCount--;
         _inMeetup.add(meetup);
+        return true;
       })
-      .catchError((err) => print(err));
+      .catchError((err) {
+        print(err);
+        return false;
+      });
   }
 
   void dispose() {

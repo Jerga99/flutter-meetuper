@@ -51,7 +51,11 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
   }
 
   _leaveMeetup() {
-    _meetupBloc.leaveMeetup(_meetup);
+    _meetupBloc.leaveMeetup(_meetup)
+      .then((_) {
+        if (screenIndex != 0) { screenIndex = 0;}
+      }
+    );
   }
 
   bool _isActiveView(Views view) {
