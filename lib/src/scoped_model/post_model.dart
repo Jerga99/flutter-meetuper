@@ -23,7 +23,7 @@ class PostModel extends Model {
     final id = faker.randomGenerator.integer(9999);
     final title = faker.food.dish();
     final body = faker.food.cuisine();
-    final newPost = Post(title: title, body: body, id: id);
+    final newPost = Post(text: title, body: body, id: id);
 
     posts.add(newPost);
     notifyListeners();

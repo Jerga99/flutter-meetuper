@@ -2,6 +2,7 @@
 import 'package:flutter_meetuper/src/models/category.dart';
 import 'package:flutter_meetuper/src/models/forms.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
+import 'package:flutter_meetuper/src/models/thread.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io' show Platform;
@@ -37,6 +38,13 @@ class MeetupApiService {
     return decodedBody.map((val) => Category.fromJSON(val)).toList();
   }
 
+  Future<List<Thread>> fetchThreads(String meetupId) async {
+    final res = await http.get('$url/threads?meetupId=$meetupId');
+    final Map<String, dynamic> parsedBody = json.decode(res.body);
+    List<dynamic> parsedThreads = parsedBody['threads'];
+    return parsedThreads.map((val) => Thread.fromJSON(val)).toList();
+  }
+
   Future<String> createMeetup(MeetupFormData formData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
@@ -52,9 +60,6 @@ class MeetupApiService {
       return Future.error(res.body);
     }
   }
-
-
-
 
   Future<bool> joinMeetup(String meetupId) async {
     try {

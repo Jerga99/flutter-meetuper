@@ -38,7 +38,7 @@ class _PostList extends StatelessWidget {
               final index = i ~/ 2;
 
               return ListTile(
-                title: Text(posts[index].title),
+                title: Text(posts[index].text),
                 subtitle: Text(posts[index].body)
               );
             },

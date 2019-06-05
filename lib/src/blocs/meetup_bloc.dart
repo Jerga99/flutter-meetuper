@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_meetuper/src/blocs/bloc_provider.dart';
 import 'package:flutter_meetuper/src/models/meetup.dart';
+import 'package:flutter_meetuper/src/models/thread.dart';
 import 'package:flutter_meetuper/src/models/user.dart';
 import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
@@ -20,14 +21,23 @@ class MeetupBloc implements BlocBase {
   Stream<Meetup> get meetup => _meetupDetailController.stream;
   StreamSink<Meetup> get _inMeetup => _meetupDetailController.sink;
 
+  final BehaviorSubject<List<Thread>> _threadSubject = BehaviorSubject();
+  Stream<List<Thread>> get threads => _threadSubject.stream;
+  StreamSink<List<Thread>> get _inThreads => _threadSubject.sink;
+
   void fetchMeetups() async {
     final meetups = await _api.fetchMeetups();
     _inMeetups.add(meetups);
   }
 
-   void fetchMeetup(String meetupId) async {
+  void fetchMeetup(String meetupId) async {
     final meetup = await _api.fetchMeetupById(meetupId);
     _inMeetup.add(meetup);
+  }
+
+  void fetchThreads(String meetupId) async {
+    final threads = await _api.fetchThreads(meetupId);
+    _inThreads.add(threads);
   }
 
   void joinMeetup(Meetup meetup) {
@@ -59,5 +69,6 @@ class MeetupBloc implements BlocBase {
   void dispose() {
     _meetupController.close();
     _meetupDetailController.close();
+    _threadSubject.close();
   }
 }

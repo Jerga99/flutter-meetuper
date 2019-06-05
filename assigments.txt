@@ -43,3 +43,17 @@
 3. In "Login" Screen Create button to navigate to "Register" screen
 4. In "Register" Screen Create button to navigate to "Login" screen
 5. Display "Login" screen as home screen
+
+
+
+1. In widgets folder create "ThreadList" statelessWidget
+2. Expect to receive meetupBloc to "ThreadList" widget
+3. implement "fetchThreads" to meetupApiProvider - from resources
+   NOTE: don't forget to pass meetup.id to fetchThreads
+4. implement "thread" and new "post" model - from resources
+5. in meetupBloc implement "threads behavior subject" + stream and sink
+6. in meetupBloc create function "fetchThreads" where you will call
+   "fetchThreads" from API
+7. retreive threads from "fetchThreads" call and pass them to stream
+8. in "ThreadList" create streamBuilder and listen to this stream
+   when you receive data, display just simple list of each "thread" title, e.g: thread.title
