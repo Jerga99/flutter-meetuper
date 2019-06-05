@@ -11,7 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class MeetupApiService {
-  final String url = Platform.isIOS ? 'http://localhost:3001/api/v1' : 'http://10.0.2.2:3001/api/v1';
+  // final String url = Platform.isIOS ? 'http://localhost:3001/api/v1' : 'http://10.0.2.2:3001/api/v1';
+  final String url = 'https://flutter-meetuper-server.herokuapp.com/api/v1';
   static final MeetupApiService _singleton = MeetupApiService._internal();
 
   factory MeetupApiService() {
