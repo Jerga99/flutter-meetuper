@@ -7,6 +7,13 @@ import 'package:flutter_meetuper/src/services/auth_api_service.dart';
 import 'package:flutter_meetuper/src/services/meetup_api_service.dart';
 import 'package:flutter_meetuper/src/widgets/bottom_navigation.dart';
 
+
+enum Views {
+  detailView,
+  threadView,
+  peopleView
+}
+
 class MeetupDetailScreen extends StatefulWidget {
   static final String route = '/meetupDetail';
   final String meetupId;
@@ -45,6 +52,10 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
     _meetupBloc.leaveMeetup(_meetup);
   }
 
+  bool _isActiveView(Views view) {
+    return view.index == screenIndex;
+  }
+
   Widget build(BuildContext context) {
     return StreamBuilder<UserState>(
       stream: _userBloc.userState,
@@ -54,7 +65,7 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
         return Scaffold(
           body: Builder(
             builder: (BuildContext context) {
-              if (screenIndex == 0) {
+              if (_isActiveView(Views.detailView)){
                 return StreamBuilder<Meetup>(
                   stream: _meetupBloc.meetup,
                   builder: (BuildContext context, AsyncSnapshot<Meetup> snapshot) {
@@ -87,17 +98,19 @@ class _MeetupDetailScreenState extends State<MeetupDetailScreen> {
                   },
                 );
               }
-              if (screenIndex == 1) {
+              if (_isActiveView(Views.threadView)) {
                 return Center(child: Text('I am Threads View!'));
               }
 
-              if (screenIndex == 2 ) {
+              if (_isActiveView(Views.peopleView)) {
                 return Center(child: Text('I am People View!'));
               }
             }
           ),
           appBar: AppBar(title: Text('Meetup Detail')),
-          bottomNavigationBar: BottomNavigation(onChange: (i) => setState(() => screenIndex = i)),
+          bottomNavigationBar:
+            BottomNavigation(userState: userState,
+                             onChange: (int i) => setState(() => screenIndex = i)),
           floatingActionButton:
              _MeetupActionButton(userState: userState,
                                  joinMeetup: _joinMeetup,
