@@ -63,7 +63,7 @@ module.exports = {
       "startDate": moment().add(7, 'days').toISOString(),
       "timeFrom": "08:00",
       "timeTo": "10:00",
-      "joinedPeopleCount": 2,
+      "joinedPeopleCount": 1,
       "status": "active",
       "category": category2Id,
       "joinedPeople": [user3Id],

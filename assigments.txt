@@ -57,3 +57,10 @@
 7. retreive threads from "fetchThreads" call and pass them to stream
 8. in "ThreadList" create streamBuilder and listen to this stream
    when you receive data, display just simple list of each "thread" title, e.g: thread.title
+
+
+1. In widgets folder create "JoinedPeopleList" statelessWidget
+2. Expect to receive meetupBloc to "JoinedPeopleList" widget
+3. in "JoinedPeopleList" build function return StreamBuilder and
+   listen to "meetup" stream
+4. In StreamBuilder "builder" function provide code from resources
